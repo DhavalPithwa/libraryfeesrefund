@@ -15,7 +15,11 @@ class adminwork extends Controller
             // echo 'you are admin';
             $user = Auth::user();
             $req->session()->put(['email'=>$user['email'],'name'=>$user['name']]);
-            return redirect()->to('/admin');
+            if ($user['type'] == 0) {
+                return redirect()->to('/admin');
+            } else {
+                return redirect()->to('/accountent');
+            }
         } else if (Auth::guard('student')->attempt($input)) {
             echo 'student';
         } else {
