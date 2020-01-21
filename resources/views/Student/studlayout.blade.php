@@ -47,40 +47,30 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/admin')}}">
+        <a class="nav-link" href="{{url('/student')}}">
           <i class="fas fa-home"></i>
           <span>Home</span></a>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{{url('/add_stud')}}">
-          <i class="fas fa-user-plus"></i>
-          <span>Add Students</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/add_acc')}}">
-          <i class="fas fa-user-plus"></i>
-          <span>Add Accountent</span></a>
-      </li>
-
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{{url('/profile')}}">
+        <a class="nav-link" href="{{url('/stud_profile')}}">
           <i class="fas fa-id-card"></i>
           <span>Profile</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="{{url('/request')}}">
+         <i class="fas fa-paper-plane"></i>
+          <span>Send Request</span></a>
       </li>
 
       <!-- Divider -->

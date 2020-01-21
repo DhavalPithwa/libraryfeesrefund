@@ -30,8 +30,10 @@ class adminwork extends Controller
                 return redirect()->to('/accountent');
             }
         } else if (Auth::guard('student')->attempt($input)) {
+            $user = Auth::guard('student')->user();
+            $req->session()->put(['email'=>$user['email'],'name'=>$user['name']]);
             toast('Login As Student', 'success');
-            echo 'student';
+            return redirect()->to('/student');
         } else {
             toast('Check Credentials', 'error');
             return back();
@@ -83,17 +85,26 @@ class adminwork extends Controller
 
     public function chnagepass(Request $req)
     {
-        if (Auth::user()) {
+        if (Auth::user() or Auth::guard('student')->user()) {
 
             $validatedData = $req->validate([
                 'cpass'     => 'required',
                 'npass'     => 'required|min:3',
                 'cnpass' => 'required|same:npass',
             ]);
-            $capass = Auth::user()->password;
+            if (Auth::user()) {
+                $capass = Auth::user()->password;
+            } else {
+                $capass = Auth::guard('student')->user()->password;
+            }
+            
             
             if (Hash::check($req->cpass, $capass)) {
-                $user = User::where('email', Auth::user()->email)->first();
+                if (Auth::user()) {
+                    $user = User::where('email', Auth::user()->email)->first();
+                } else {
+                    $user = Student::where('email', Auth::guard('student')->user()->email)->first();
+                }
                 $user->password = Hash::make($req->npass);
                 $user->save();
                 $req->session()->flush();
@@ -111,8 +122,8 @@ class adminwork extends Controller
 
     public function export()
     {
-        return Excel::download(new StudentExport, 'students.xlsx');
         toast('Students Data Downloaded.', 'success');
+        return Excel::download(new StudentExport, 'students.xlsx');
     }
 
     public function logout(Request $req)

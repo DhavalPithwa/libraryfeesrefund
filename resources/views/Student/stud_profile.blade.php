@@ -1,6 +1,6 @@
-@extends('Admin.adminlayout')
+@extends('Student.studlayout')
 
-@section('title','Admin - Profile')
+@section('title','Student - Profile')
 
 
 @section('content')
@@ -35,7 +35,7 @@
               <h3 class="h5 mb-0 text-gray-800"><label>{{$user->email}}</label></h3>
               <hr>
               <h3 class="h3 mb-0 text-gray-800"><b>Mobile Number</b></h3><br>
-              <h3 class="h5 mb-0 text-gray-800"><label>{{$user->phone_no}}</label></h3>
+              <h3 class="h5 mb-0 text-gray-800"><label>{{$user->Phone_No}}</label></h3>
           </div>
         </div>
       </div>

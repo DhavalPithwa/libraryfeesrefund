@@ -36,6 +36,35 @@ Route::get('/profile', function () {
     }
 });
 
+Route::get('/acc_profile', function () {
+    if (Auth::user()) {
+        $user = Auth::user();
+        return view('Accountent.acc_profile', compact('user'));
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+Route::get('/stud_profile', function () {
+    if (Auth::guard('student')->user()) {
+        $user = Auth::guard('student')->user();
+        return view('Student.stud_profile', compact('user'));
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+
+Route::get('/request', function () {
+    if (Auth::guard('student')->user()) {
+        $user = Auth::guard('student')->user();
+        return view('Student.studrequest', compact('user'));
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+
 Route::get('/add_stud', function () {
     if (Auth::user()) {
         $data = Student::all();
@@ -48,6 +77,22 @@ Route::get('/add_stud', function () {
 Route::get('/admin', function () {
     if (Auth::user()) {
         return view('Admin.adminhome');
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+Route::get('/accountent', function () {
+    if (Auth::user()) {
+        return view('Accountent.acchome');
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+Route::get('/student', function () {
+    if (Auth::guard('student')->user()) {
+        return view('Student.studhome');
     } else {
         return redirect()->to('/');
     }

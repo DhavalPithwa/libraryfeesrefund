@@ -1,6 +1,6 @@
-@extends('Admin.adminlayout')
+@extends('Accountent.acclayout')
 
-@section('title','Admin - Profile')
+@section('title','Accountent - Profile')
 
 
 @section('content')
