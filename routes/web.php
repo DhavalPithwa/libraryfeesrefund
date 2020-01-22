@@ -99,6 +99,7 @@ Route::get('/student', function () {
 });
 
 Route::post('/adminlogin', 'adminwork@login');
+Route::post('/sendreq', 'StudentController@store');
 Route::post('/addacc', 'adminwork@addacc');
 Route::post('/addstud', 'adminwork@addstud');
 Route::post('/chnagepass', 'adminwork@chnagepass');

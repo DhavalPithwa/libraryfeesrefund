@@ -9,7 +9,7 @@
 
     <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Add Students</h1>
+            <h1 class="h3 mb-0 text-gray-800"><b>Add Students</b></h1>
           </div>
 
      @if ($errors->any())
@@ -46,6 +46,7 @@
         <span class="text">Export</span>
       </a>
     </div>
+  </form>
 
 
   <!-- Table Start -->
@@ -99,7 +100,7 @@
 
 <!-- Table End -->
 
-
+</div>
 
 @endsection
       

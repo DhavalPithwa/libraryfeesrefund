@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
 use App\Student;
 use Hash;
 use Auth;
 use Excel;
 use Route;
+use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Exports\StudentExport;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -23,19 +23,19 @@ class adminwork extends Controller
             $user = Auth::user();
             $req->session()->put(['email'=>$user['email'],'name'=>$user['name']]);
             if ($user['type'] == 0) {
-                toast('Login As Admin', 'success');
+                toast('Login As Admin', 'success')->width('20em');
                 return redirect()->to('/admin');
             } else {
-                toast('Login As Accountant', 'success');
+                toast('Login As Accountant', 'success')->width('20em');
                 return redirect()->to('/accountent');
             }
         } else if (Auth::guard('student')->attempt($input)) {
             $user = Auth::guard('student')->user();
             $req->session()->put(['email'=>$user['email'],'name'=>$user['name']]);
-            toast('Login As Student', 'success');
+            toast('Login As Student', 'success')->width('20em');
             return redirect()->to('/student');
         } else {
-            toast('Check Credentials', 'error');
+            toast('Check Credentials', 'error')->width('20em');
             return back();
         }
     }
@@ -59,7 +59,7 @@ class adminwork extends Controller
             $accountent->save();
 
             $data = User::where('type', 1)->get();
-            toast('Accountant Add Successful.', 'success');
+            toast('Accountant Add Successful.', 'success')->width('20em');
             return view('Admin.admin_add_acc', compact('data'));
         
         } else {
@@ -75,7 +75,7 @@ class adminwork extends Controller
             Excel::import(new StudentImport, $req->file('customFile'));
             
             $data = Student::all();
-            toast('Students Add Successful.', 'success');
+            toast('Students Add Successful.', 'success')->width('20em');
             return view('Admin.admin_add_stud', compact('data'));
         
         } else {
@@ -122,14 +122,14 @@ class adminwork extends Controller
 
     public function export()
     {
-        toast('Students Data Downloaded.', 'success');
+        toast('Students Data Downloaded.', 'success')->width('22em');
         return Excel::download(new StudentExport, 'students.xlsx');
     }
 
     public function logout(Request $req)
     {
         $req->session()->flush();
-        toast('Logout Success.', 'success');
+        toast('Logout Success.', 'success')->width('20em');
         return redirect()->to('/');
     }
 }

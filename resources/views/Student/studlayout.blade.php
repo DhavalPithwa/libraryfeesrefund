@@ -21,7 +21,11 @@
 
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
 
 </head>
 
@@ -56,11 +60,11 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <!-- Nav Item - Dashboard -->
+      
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/stud_profile')}}">
-          <i class="fas fa-id-card"></i>
-          <span>Profile</span></a>
+        <a class="nav-link" href="{{url('/request')}}">
+         <i class="fas fa-paper-plane"></i>
+          <span>Send Request</span></a>
       </li>
 
       <!-- Divider -->
@@ -68,9 +72,9 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/request')}}">
-         <i class="fas fa-paper-plane"></i>
-          <span>Send Request</span></a>
+        <a class="nav-link" href="{{url('/stud_profile')}}">
+          <i class="fas fa-id-card"></i>
+          <span>Profile</span></a>
       </li>
 
       <!-- Divider -->
@@ -115,6 +119,8 @@
 
     @yield('content')
 
+  </div>
+</div>
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">
@@ -186,7 +192,39 @@
       $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
   </script>
+  <script type="text/javascript">
 
+        function submitResult() {
+          var ans = false;
+          if( document.getElementById("lfeefile").files.length == 0 ){
+              if (confirm("100 Rupees Cut from Your Amount For Library Fee Recipt.")) {
+                var amount = document.getElementById("amt").value;
+                alert("Your Amount :-"+ (amount-100));
+                amount.value = amount-100;
+                ans = true;
+              } 
+          }
+          if( document.getElementById("sem6feefile").files.length == 0 ){
+              if (confirm("100 Rupees Cut from Your Amount For Sem 6 Fee Recipt.")) {
+                var amount = document.getElementById("amt").value;
+                alert("Your Amount :-" + (amount-100));
+                ans = true; 
+              } 
+          } 
+          alert(ans);
+          if (ans) {
+            alert('Submit');
+            return true;
+          } else {
+            alert('Add Missing Files.');
+            return false;
+          }
+        }
+  </script>
+
+  <script type="text/javascript">
+    
+  </script>
 
 </body>
 

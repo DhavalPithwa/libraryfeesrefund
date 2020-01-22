@@ -124,6 +124,8 @@
     <!-- End of Topbar -->
 
     @yield('content')
+  </div>
+</div>
 
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
