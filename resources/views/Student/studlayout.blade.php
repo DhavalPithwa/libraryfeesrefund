@@ -22,11 +22,11 @@
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
-
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -195,31 +195,31 @@
   <script type="text/javascript">
 
         function submitResult() {
-          var ans = false;
-          if( document.getElementById("lfeefile").files.length == 0 ){
-              if (confirm("100 Rupees Cut from Your Amount For Library Fee Recipt.")) {
-                var amount = document.getElementById("amt").value;
-                alert("Your Amount :-"+ (amount-100));
-                amount.value = amount-100;
-                ans = true;
-              } 
-          }
-          if( document.getElementById("sem6feefile").files.length == 0 ){
-              if (confirm("100 Rupees Cut from Your Amount For Sem 6 Fee Recipt.")) {
-                var amount = document.getElementById("amt").value;
-                alert("Your Amount :-" + (amount-100));
-                ans = true; 
-              } 
-          } 
-          alert(ans);
-          if (ans) {
-            alert('Submit');
-            return true;
-          } else {
-            alert('Add Missing Files.');
-            return false;
+          var form = document.getElementById('form');
+          if ( document.getElementById("lfeefile").files.length == 0 || document.getElementById("sem6feefile").files.length == 0) {
+                form.addEventListener('submit', function(e) {
+                  e.preventDefault();
+                });
+                swal({
+                  title: "Amount Detail",
+                  text: "100 Rupees Cut Per Document If Missing.",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  if (willDelete) {
+                    swal("Your Form Submited.", {
+                      icon: "success",
+                    });
+                    form.submit();
+                  } else {
+                    swal("Add Missing Documents.",{icon: "info",});
+                  }
+                });
           }
         }
+
   </script>
 
   <script type="text/javascript">

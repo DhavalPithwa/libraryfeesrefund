@@ -5,7 +5,7 @@
 
 @section('content')
   
- <div class="container" >
+ <div class="container-fluid" >
 
     <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -82,14 +82,13 @@
                   <input type="text" class="form-control" name="amt" id="amt" placeholder="Your mount">
                 </div>
                 <div class="col" style="padding-top: 28px;">
-                  <button class="btn btn-primary btn-user btn-block" name="submit"  id="submit">
+                  <button class="btn btn-primary btn-user btn-block" name="btnsubmit"  id="btnsubmit" onClick="return submitResult();">
                   Submit
                   </button>
-                  <!-- onClick="return submitResult();" -->
+                  
                 </div>
               </div>
               <hr>
-              in
           </div>
       </div>
       </div>

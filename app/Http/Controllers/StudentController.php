@@ -51,6 +51,7 @@ class StudentController extends Controller
             Alert::error('Request', 'You alreday Submit One Request');
             return back();
         } else {
+            
             $this->validate($request, [
 
             'lfeeno' => 'required',
@@ -68,7 +69,7 @@ class StudentController extends Controller
 
             if (intval($request->input('amt')) > 2500) {
                 
-                Alert::error('Password', 'Current Password Not Match.');
+                Alert::error('Amount', 'Amount Should be less then or equel to 2500.');
                 return back();
 
             }
@@ -117,9 +118,10 @@ class StudentController extends Controller
             $req->gtugrade_path = $gradsimage;
             $req->passbook_path = $passbookimage;
             $req->cheque_path = $cancelceqimage;
-            $req->amount = $request->input('amt');
+            $req->amount = $amount;
             $req->status = 0;
             $req->save();
+            Alert::success('Request', 'Your Request Send Successfully.');
             return redirect()->to('/student');
         }
         

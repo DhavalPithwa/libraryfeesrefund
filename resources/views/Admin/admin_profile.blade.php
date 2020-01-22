@@ -5,7 +5,7 @@
 
 @section('content')
   
- <div class="container" >
+ <div class="container-fluid" >
 
     <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -51,7 +51,6 @@
 <div class="row">
     <div class="col-xl-12 col-lg-8">
         <div class="card-body">
-              <div class="form-row" style="padding: 10px;">
                 <form class="" action="{{url('/chnagepass')}}" method="post">
                 @csrf
               <div class="form-row" style="padding: 10px;">
@@ -66,7 +65,7 @@
                     <hr>
                 </div>
                 <div class="col">
-                    <h2 class="h3 mb-0 text-gray-800"><b>Confirm New Password</b></h2><br>
+                    <h2 class="h3 mb-0 text-gray-800"><b>Confirm Password</b></h2><br>
                   <input type="password" class="form-control form-control-user" name="cnpass" placeholder="Enter Password">
                     <hr>
                 </div>

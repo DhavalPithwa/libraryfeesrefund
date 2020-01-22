@@ -1,6 +1,7 @@
 <?php
 use App\User;
 use App\Student;
+use App\FeeRequest;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -92,7 +93,8 @@ Route::get('/accountent', function () {
 
 Route::get('/student', function () {
     if (Auth::guard('student')->user()) {
-        return view('Student.studhome');
+        $data = FeeRequest::where('enroll' ,Auth::guard('student')->user()['enroll'])->first();
+        return view('Student.studhome' ,compact('data'));
     } else {
         return redirect()->to('/');
     }
