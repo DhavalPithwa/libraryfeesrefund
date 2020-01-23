@@ -198,7 +198,16 @@
       $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
   </script>
-
+  <script type="text/javascript">
+    
+    $(document).ready(function () {
+      $('#dtHorizontalVerticalExample').DataTable({
+      "scrollX": true,
+      "scrollY": 465,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    });
+  </script>
 
 </body>
 

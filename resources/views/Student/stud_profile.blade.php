@@ -44,8 +44,6 @@
               </div>
       </div>
       </div>
-</div>
-<div class="row">
     <div class="col-xl-12 col-lg-8">
         <div class="card-body">
               <div class="form-row" style="padding: 10px;">

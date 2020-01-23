@@ -158,7 +158,75 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        $this->validate($request, [
+
+            'lfeeno' => 'required',
+            'lfeefile' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'sem6feefile' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'gradsfile' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'passbookfile' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'cancelceqfile' => 'image|mimes:jpeg,png,jpg|max:2048',
+
+        ]);
+
+        $user = Auth::guard('student')->user();
+        $data = FeeRequest::where('enroll', $user['enroll'])->first();
+        $amount = $data['amount'];
+        $updatedata = FeeRequest::find($user['enroll']);
+
+        if ($data['lfees_path'] == null or $data['sem6fee_path'] == null) {
+            if ($request->hasFile('lfeefile')) {
+                $amount = $amount + 100;
+            }
+            if ($request->hasFile('sem6feefile')) {
+                $amount = $amount + 100;
+            }
+        }
+
+        $destinationPath = public_path('/images');
+
+        if ($request->hasFile('lfeefile')) {
+            $lfeimage = $request->file('lfeefile');
+            $lfeeimage = $user['enroll'].'_LFee'.'.'.$lfeimage->getClientOriginalExtension();
+            $lfeimage->move($destinationPath, $lfeeimage);
+            $updatedata->lfees_path = $lfeeimage;
+        }
+
+        if ($request->hasFile('sem6feefile')) {
+            $s6feeimage = $request->file('sem6feefile');
+            $sem6feeimage = $user['enroll'].'_sem6fee'.'.'.$s6feeimage->getClientOriginalExtension();
+            $s6feeimage->move($destinationPath, $sem6feeimage);
+            $updatedata->sem6fee_path = $sem6feeimage;
+        }
+
+        if ($request->hasFile('gradsfile')) {
+            $ghimage = $request->file('gradsfile');
+            $gradsimage = $user['enroll'].'_gradhs'.'.'.$ghimage->getClientOriginalExtension();
+            $ghimage->move($destinationPath, $gradsimage);
+            $updatedata->gtugrade_path = $gradsimage;
+        }
+
+        if ($request->hasFile('passbookfile')) {
+            $passimage = $request->file('passbookfile');
+            $passbookimage = $user['enroll'].'_passbook'.'.'.$passimage->getClientOriginalExtension();
+            $passimage->move($destinationPath, $passbookimage);
+            $updatedata->passbook_path = $passbookimage;
+        }
+
+        if ($request->hasFile('cancelceqfile')) {
+            $ccheimage = $request->file('cancelceqfile');
+            $cancelceqimage = $user['enroll'].'_canche'.'.'.$ccheimage->getClientOriginalExtension();
+            $ccheimage->move($destinationPath, $cancelceqimage);
+            $updatedata->cheque_path = $cancelceqimage;
+        }
+        $updatedata->lfees_no = $request->input('lfeeno');
+        $updatedata->amount = $amount;
+        $updatedata->save();
+        Alert::success('Update Request', 'Your Request Updated   Successfully.');
+        return redirect()->to('/student');
+
+        // var_dump($request->input());
+        // dd($request->file());
     }
 
     /**

@@ -2,6 +2,7 @@
 use App\User;
 use App\Student;
 use App\FeeRequest;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,14 +20,6 @@ Route::get('/', function () {
 
 Route::get('/logout', 'adminwork@logout');
 
-Route::get('/add_acc', function () {
-    if (Auth::user()) {
-        $data = User::where('type', 1)->get();
-        return view('Admin.admin_add_acc', compact('data'));
-    } else {
-        return redirect()->to('/');
-    }
-});
 
 Route::get('/profile', function () {
     if (Auth::user()) {
@@ -37,34 +30,14 @@ Route::get('/profile', function () {
     }
 });
 
-Route::get('/acc_profile', function () {
+Route::get('/add_acc', function () {
     if (Auth::user()) {
-        $user = Auth::user();
-        return view('Accountent.acc_profile', compact('user'));
+        $data = User::where('type', 1)->get();
+        return view('Admin.admin_add_acc', compact('data'));
     } else {
         return redirect()->to('/');
     }
 });
-
-Route::get('/stud_profile', function () {
-    if (Auth::guard('student')->user()) {
-        $user = Auth::guard('student')->user();
-        return view('Student.stud_profile', compact('user'));
-    } else {
-        return redirect()->to('/');
-    }
-});
-
-
-Route::get('/request', function () {
-    if (Auth::guard('student')->user()) {
-        $user = Auth::guard('student')->user();
-        return view('Student.studrequest', compact('user'));
-    } else {
-        return redirect()->to('/');
-    }
-});
-
 
 Route::get('/add_stud', function () {
     if (Auth::user()) {
@@ -91,17 +64,57 @@ Route::get('/accountent', function () {
     }
 });
 
-Route::get('/student', function () {
-    if (Auth::guard('student')->user()) {
-        $data = FeeRequest::where('enroll' ,Auth::guard('student')->user()['enroll'])->first();
-        return view('Student.studhome' ,compact('data'));
+Route::get('/acc_profile', function () {
+    if (Auth::user()) {
+        $user = Auth::user();
+        return view('Accountent.acc_profile', compact('user'));
     } else {
         return redirect()->to('/');
     }
 });
 
-Route::post('/adminlogin', 'adminwork@login');
+Route::get('/student', function () {
+    if (Auth::guard('student')->user()) {
+        $data = FeeRequest::where('enroll', Auth::guard('student')->user()['enroll'])->first();
+        return view('Student.studhome', compact('data'));
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+Route::get('/stud_profile', function () {
+    if (Auth::guard('student')->user()) {
+        $user = Auth::guard('student')->user();
+        return view('Student.stud_profile', compact('user'));
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+
+Route::get('/request', function () {
+    if (Auth::guard('student')->user()) {
+        $user = Auth::guard('student')->user();
+        return view('Student.studrequest', compact('user'));
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+Route::get('/editreq', function () {
+    if (Auth::guard('student')->user()) {
+        $user = Auth::guard('student')->user();
+        $data = FeeRequest::where('enroll', $user['enroll'])->first();
+        //dd($data->lfees_no);
+        return view('Student.editrequest', compact('user', 'data'));
+    } else {
+        return redirect()->to('/');
+    }
+});
+
 Route::post('/sendreq', 'StudentController@store');
+Route::post('/updatereq', 'StudentController@update');
+Route::post('/adminlogin', 'adminwork@login');
 Route::post('/addacc', 'adminwork@addacc');
 Route::post('/addstud', 'adminwork@addstud');
 Route::post('/chnagepass', 'adminwork@chnagepass');
