@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Student;
+use App\FeeRequest;
 use Hash;
 use Auth;
 use Excel;
@@ -15,6 +16,60 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class adminwork extends Controller
 {
+    
+    public function index()
+    {
+        if (Auth::user()) {
+            // $nvarifie = count(FeeRequest::where('status', 0)->get());
+            // $complete = count(FeeRequest::where('status', 3)->get());
+            // $underpay = count(FeeRequest::where('status', 1)->get());
+            // $rejected = count(FeeRequest::where('status', 2)->get());
+
+            $nvdata = FeeRequest::where('status', 0)->get();
+            $updata = FeeRequest::where('status', 1)->get();
+            $rjdata = FeeRequest::where('status', 2)->get();
+            $cmdata = FeeRequest::where('status', 3)->get();
+            // $user = Auth::user();
+            foreach ($nvdata as $d) {
+                $name = Student::where('enroll', $d->enroll)->select('name')->first();
+                //dd($name->name);
+                $d->name = $name->name;
+            }
+            foreach ($updata as $upd) {
+                $name = Student::where('enroll', $upd->enroll)->select('name')->first();
+                //dd($name->name);
+                $upd->name = $name->name;
+            }
+            foreach ($rjdata as $rjd) {
+                $name = Student::where('enroll', $rjd->enroll)->select('name')->first();
+                //dd($name->name);
+                $rjd->name = $name->name;
+            }
+            foreach ($cmdata as $cmd) {
+                $name = Student::where('enroll', $cmd->enroll)->select('name')->first();
+                //dd($name->name);
+                $cmd->name = $name->name;
+            }
+            //dd($data);
+            return view('Admin.adminhome', compact('nvdata', 'cmdata', 'updata', 'rjdata'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+
+    public function extedreq($id)
+    {
+        if (Auth::user()) {
+            $data = FeeRequest::where('enroll', $id)->first();
+            $user = Student::where('enroll', $id)->first();
+            return view('Admin.viewrequest', compact('user', 'data'));
+        } else {
+            //return redirect()->to('/');
+        }
+    }
+
+
     public function login(Request $req)
     {
         $input = $req->only(['email'=>'email','password'=>'password']);
@@ -62,6 +117,34 @@ class adminwork extends Controller
             toast('Accountant Add Successful.', 'success')->width('20em');
             return view('Admin.admin_add_acc', compact('data'));
         
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+    public function passorrejectreq(Request $req)
+    {
+        if (Auth::user()) {
+            
+            if ($req->input('rejectclick') == 1) {
+                $validatedData = $req->validate([
+                'reject_reason' => 'required',
+                ]);
+            }
+            $request = FeeRequest::where('enroll', $req->input('reqenroll'))->first();
+            if ($req->input('reject_reason') == null) {
+                $request->reason = "Under Payment";
+                $request->status = 1;
+                $request->save();
+                Alert::success('Request', 'Request Goes Into Under Payment.');
+                return redirect()->to('/admin');
+            } else {
+                $request->reason = $req->input('reject_reason');
+                $request->status = 2;
+                $request->save();
+                Alert::success('Request', 'Request Rejected Success.');
+                return redirect()->to('/admin');
+            }
         } else {
             return redirect()->to('/');
         }

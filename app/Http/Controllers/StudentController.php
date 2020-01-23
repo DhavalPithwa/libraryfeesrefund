@@ -222,7 +222,7 @@ class StudentController extends Controller
         $updatedata->lfees_no = $request->input('lfeeno');
         $updatedata->amount = $amount;
         $updatedata->save();
-        Alert::success('Update Request', 'Your Request Updated   Successfully.');
+        Alert::success('Update Request', 'Your Request Updated Successfully.');
         return redirect()->to('/student');
 
         // var_dump($request->input());

@@ -5,7 +5,6 @@
 
 @section('content')
 
-<!-- Begin Page Content -->
         <div class="container-fluid">
 
           <!-- Page Heading -->
@@ -35,6 +34,9 @@
                       <th>Enrollment</th>
                       <th>Library Fee Recipt No</th>
                       <th>Status</th>
+                      @if ($data['status'] == 2)
+                      <td>Reason</td>
+                      @endif
                       <th>Amount</th>
                       <th>Edit</th>
                     </tr>
@@ -46,13 +48,15 @@
                       @if($data['status'] == 0)
                       <td>Not Verified</td>
                       @elseif ($data['status'] == 1)
-                      <td>Verified</td>
-                      @elseif ($data['status'] == 2)
                       <td>Under Payment</td>
+                      @elseif ($data['status'] == 2)
+                      <td>Rejetced</td>
+                      <td>{{$data['reason']}}</td>
                       @elseif ($data['status'] == 3)
-                      <td>Rejected</td>
+                      <td>Complete</td>
                       @endif
                       <td>{{$data['amount']}}</td>
+                      @if($data['status'] == 0)
                       <td>
                         <a href="{{url('/editreq')}}" class="btn btn-primary btn-icon-split">
                         <span class="icon text-white-50">
@@ -61,6 +65,9 @@
                         <span class="text">Edit Request</span>
                         </a>
                       </td>
+                      @else
+                      <td>Request Can't Editable.<b>Contact To Admin.</b></td>
+                      @endif
                     </tr>
                   </tbody>
                 </table>

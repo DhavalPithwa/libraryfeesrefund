@@ -48,13 +48,19 @@ Route::get('/add_stud', function () {
     }
 });
 
-Route::get('/admin', function () {
+Route::get('/deletedetail/{id}', function ($id) {
     if (Auth::user()) {
-        return view('Admin.adminhome');
+        //dd($id);
+        FeeRequest::where('enroll', $id)->delete();
+        Alert::success('Request Delete', 'Request Deleted Successfilly.');
+        return redirect()->to('/admin');
     } else {
         return redirect()->to('/');
     }
 });
+
+Route::get('/admin', 'adminwork@index');
+Route::get('/viewreqdetail/{id}', 'adminwork@extedreq');
 
 Route::get('/accountent', function () {
     if (Auth::user()) {
@@ -112,10 +118,12 @@ Route::get('/editreq', function () {
     }
 });
 
+
 Route::post('/sendreq', 'StudentController@store');
 Route::post('/updatereq', 'StudentController@update');
 Route::post('/adminlogin', 'adminwork@login');
 Route::post('/addacc', 'adminwork@addacc');
+Route::post('/passorrejectreq', 'adminwork@passorrejectreq');
 Route::post('/addstud', 'adminwork@addstud');
 Route::post('/chnagepass', 'adminwork@chnagepass');
 Route::get('/export', 'adminwork@export')->name('export');

@@ -13,15 +13,20 @@
   <title>@yield('title',"LFRS")</title>
 
   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link href="{{url('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+  <link href="{{url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
 
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </head>
 
@@ -207,6 +212,113 @@
       });
       $('.dataTables_length').addClass('bs-select');
     });
+
+    $(document).ready(function () {
+      $('#cmdtHorizontalVerticalExample').DataTable({
+      "scrollX": true,
+      "scrollY": 465,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    });
+
+    $(document).ready(function () {
+      $('#updtHorizontalVerticalExample').DataTable({
+      "scrollX": true,
+      "scrollY": 465,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    });
+
+    $(document).ready(function () {
+      $('#rjdtHorizontalVerticalExample').DataTable({
+      "scrollX": true,
+      "scrollY": 465,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    });
+  </script>
+
+  <script type="text/javascript">
+    
+    function elementvisible() {
+      var form = document.getElementById('form');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+      });
+      document.getElementById("rejectclick").value = 1;
+      document.getElementById("h3reason").style.display = "block";
+      document.getElementById("textreason").style.display = "block";
+    }
+
+    function formsubmit() {
+      var form = document.getElementById('form');
+      form.submit();
+    }
+
+  </script>
+
+  <script type="text/javascript">
+      
+      function shownvtable() 
+      {
+        $("#cmtable").hide("slow");
+        $("#rjtable").hide("slow");
+        $("#uptable").hide("slow");
+        $("#nvtable").show(2000);
+      }
+
+      function showcmtable() 
+      {
+        $("#nvtable").hide("slow");
+        $("#rjtable").hide("slow");
+        $("#uptable").hide("slow");
+        document.getElementById("cmtable").style.visibility = "visible";
+        $("#cmtable").show(2000);
+      }
+
+      function showuptable() 
+      {
+        $("#cmtable").hide("slow");
+        $("#rjtable").hide("slow");
+        $("#nvtable").hide("slow");
+        document.getElementById("uptable").style.visibility = "visible";
+        $("#uptable").show(2000);
+      }
+
+      function showrjtable() 
+      {
+        $("#cmtable").hide("slow");
+        $("#nvtable").hide("slow");
+        $("#uptable").hide("slow");
+        document.getElementById("rjtable").style.visibility = "visible";
+        $("#rjtable").show(2000);
+      }
+
+  </script>
+
+  <script type="text/javascript">
+    
+    function confirmation(ev) {
+            ev.preventDefault();
+            var urlToRedirect = ev.currentTarget.getAttribute('href'); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            swal({
+              title: "Delete Data",
+              text: "Are you Sure You Want To Delete Data.",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                swal("Your Form Submited.", {
+                  icon: "success",
+                });
+                 window.location.replace(urlToRedirect);
+              } else {
+                swal("Your Data is Safe.",{icon: "info",});
+              }
+            });
+        }
   </script>
 
 </body>

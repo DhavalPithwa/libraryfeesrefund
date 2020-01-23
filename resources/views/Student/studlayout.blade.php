@@ -200,7 +200,7 @@
                 form.addEventListener('submit', function(e) {
                   e.preventDefault();
                 });
-                swal({
+                swal({  
                   title: "Amount Detail",
                   text: "100 Rupees Cut Per Document If Missing.",
                   icon: "warning",
