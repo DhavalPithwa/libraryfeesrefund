@@ -154,7 +154,10 @@ class adminwork extends Controller
     {
         if (Auth::user()) {
 
-
+            $validatedData = $req->validate([
+                'customFile' => 'required|max:255',
+            ]);
+            
             Excel::import(new StudentImport, $req->file('customFile'));
             
             $data = Student::all();

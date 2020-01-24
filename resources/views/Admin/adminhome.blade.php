@@ -156,6 +156,7 @@
                       <th>Library Fee Number</th>
                       <th>Documents</th>
                       <th>Transaction Id</th>
+                      <th>Completed By</th>
                       <th>Amount</th>
                     </tr>
                   </thead>
@@ -167,6 +168,7 @@
                       <th>Library Fee Number</th>
                       <th>Documents</th>
                       <th>Transaction Id</th>
+                      <th>Completed By</th>
                       <th>Amount</th>
                     </tr>
                   </tfoot>
@@ -183,6 +185,7 @@
                       <td>All Documents Submited</td>
                       @endif
                       <td>{{$cmd->tran_id}}</td>
+                      <td>{{$cmd->completedby}}</td>
                       <td>{{$cmd->amount}}</td>
                     </tr>
                     @endforeach

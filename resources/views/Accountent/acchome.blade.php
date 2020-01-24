@@ -22,89 +22,64 @@
 
 
        <!-- Table Start -->
-
+<form action="{{url('/acceptreq')}}" method="post" id="form">
        <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Requests</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Under Payment Requests</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
+                      <th>Enroll</th>
                       <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
+                      <th>Library Fee Number</th>
+                      <th>Documents</th>
+                      <th>Amount</th>
+                      <th id="head">Accept</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
+                      <th>Enroll</th>
                       <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
+                      <th>Library Fee Number</th>
+                      <th>Documents</th>
+                      <th>Amount</th>
+                      <th id="foot">Accept</th>
                     </tr>
                   </tfoot>
+                    @csrf
                   <tbody>
+                    @foreach ($updata as $upd)
                     <tr>
-                      <td>Tiger Nixon</td>
-                      <td>System Architect</td>
-                      <td>Edinburgh</td>
-                      <td>61</td>
-                      <td>2011/04/25</td>
-                      <td>$320,800</td>
+                      <td name="requestenroll">{{$upd->enroll}}</td>
+                      <td>{{$upd->name}}</td>
+                      <td>{{$upd->lfees_no}}</td>
+                      @if ($upd->lfees_path == null or $upd->sem6fee_path == null or $upd->passbook_path == null or $upd->cheque_path == null or $upd->gtugrade_path == null)
+                      <td>Documents Missing</td>
+                      @else 
+                      <td>All Documents Submited</td>
+                      @endif
+                      <td>{{$upd->amount}}</td>
+                      <td>
+                        <button class="btn btn-primary btn-user btn-block" name="btnacc"  id="btnacc" onClick="seetrid({{$upd->enroll}});">
+                        Accept
+                        </button>
+                        
+                      </td>
                     </tr>
-                    <tr>
-                      <td>Garrett Winters</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>63</td>
-                      <td>2011/07/25</td>
-                      <td>$170,750</td>
-                    </tr>
-                    <tr>
-                      <td>Ashton Cox</td>
-                      <td>Junior Technical Author</td>
-                      <td>San Francisco</td>
-                      <td>66</td>
-                      <td>2009/01/12</td>
-                      <td>$86,000</td>
-                    </tr>
-                    <tr>
-                      <td>Cedric Kelly</td>
-                      <td>Senior Javascript Developer</td>
-                      <td>Edinburgh</td>
-                      <td>22</td>
-                      <td>2012/03/29</td>
-                      <td>$433,060</td>
-                    </tr>
-                    <tr>
-                      <td>Airi Satou</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>33</td>
-                      <td>2008/11/28</td>
-                      <td>$162,700</td>
-                    </tr>
-                    <tr>
-                      <td>Brielle Williamson</td>
-                      <td>Integration Specialist</td>
-                      <td>New York</td>
-                      <td>61</td>
-                      <td>2012/12/02</td>
-                      <td>$372,000</td>
-                    </tr>
+                    @endforeach
                   </tbody>
+                  
                 </table>
               </div>
             </div>
           </div>
-
+          <input type="hidden" name="trid" id="tid" value="0">
+          <input type="hidden" name="enroll" id="enroll" value="0">
+</form>
         </div>
 
 

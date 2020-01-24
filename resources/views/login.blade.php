@@ -43,7 +43,7 @@
                   <form class="user" action="{{url('/adminlogin')}}" method="post">
                     @csrf
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" name="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="text" class="form-control form-control-user" name="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                     </div>
                     <div class="form-group">
                       <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password">

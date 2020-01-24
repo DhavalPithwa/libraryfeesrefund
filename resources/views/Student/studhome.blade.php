@@ -34,11 +34,14 @@
                       <th>Enrollment</th>
                       <th>Library Fee Recipt No</th>
                       <th>Status</th>
-                      @if ($data['status'] == 2)
-                      <td>Reason</td>
-                      @endif
                       <th>Amount</th>
+                      @if ($data['status'] == 2)
+                      <th>Reason</th>
+                      @elseif ($data['status'] == 3)
+                      <th>Transaction Id</th>
+                      @else
                       <th>Edit</th>
+                      @endif
                     </tr>
                   </thead>
                   <tbody>
@@ -51,7 +54,6 @@
                       <td>Under Payment</td>
                       @elseif ($data['status'] == 2)
                       <td>Rejetced</td>
-                      <td>{{$data['reason']}}</td>
                       @elseif ($data['status'] == 3)
                       <td>Complete</td>
                       @endif
@@ -65,6 +67,10 @@
                         <span class="text">Edit Request</span>
                         </a>
                       </td>
+                      @elseif ($data['status'] == 2)
+                      <td>{{$data['reason']}}</td>
+                      @elseif ($data['status'] == 3)
+                      <td>{{$data['tran_id']}}</td>
                       @else
                       <td>Request Can't Editable.<b>Contact To Admin.</b></td>
                       @endif

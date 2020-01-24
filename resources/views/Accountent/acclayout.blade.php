@@ -21,7 +21,14 @@
 
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 </head>
 
@@ -178,6 +185,35 @@
     });
   </script>
 
+  <script type="text/javascript">
+    
+    function seetrid(enroll) {
+      var form = document.getElementById('form');
+      var tid = document.getElementById('tid');
+      var setenroll = document.getElementById('enroll');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+      });
+      Swal.fire({
+      title: 'Enter Transaction Id',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      showLoaderOnConfirm: true,
+      }).then((result) => {
+        if (result.value) {
+          setenroll.value = enroll;
+          tid.value =  result.value;
+          form.submit();
+        }
+      })
+    }
+
+
+  </script>
 
 </body>
 

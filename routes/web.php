@@ -64,7 +64,13 @@ Route::get('/viewreqdetail/{id}', 'adminwork@extedreq');
 
 Route::get('/accountent', function () {
     if (Auth::user()) {
-        return view('Accountent.acchome');
+        $updata = FeeRequest::where('status', 1)->get();
+        foreach ($updata as $upd) {
+            $name = Student::where('enroll', $upd->enroll)->select('name')->first();
+            //dd($name->name);
+            $upd->name = $name->name;
+        }
+        return view('Accountent.acchome', compact('updata'));
     } else {
         return redirect()->to('/');
     }
@@ -118,7 +124,7 @@ Route::get('/editreq', function () {
     }
 });
 
-
+Route::post('/acceptreq', 'FeeRequestController@update');
 Route::post('/sendreq', 'StudentController@store');
 Route::post('/updatereq', 'StudentController@update');
 Route::post('/adminlogin', 'adminwork@login');

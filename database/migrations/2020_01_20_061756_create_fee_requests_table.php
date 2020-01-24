@@ -24,6 +24,7 @@ class CreateFeeRequestsTable extends Migration
             $table->string('cheque_path');
             $table->string('gtugrade_path');
             $table->integer('status');
+            $table->string('completedby')->nullable();
             $table->string('reason')->nullable();
             $table->string('tran_id')->nullable();
             $table->integer('amount');
