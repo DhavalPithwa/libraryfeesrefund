@@ -70,7 +70,7 @@ Route::get('/accountent', function () {
             //dd($name->name);
             $upd->name = $name->name;
         }
-        return view('Accountent.acchome', compact('updata'));
+        return view('Accountent.acchomewithdate', compact('updata'));
     } else {
         return redirect()->to('/');
     }
@@ -125,6 +125,7 @@ Route::get('/editreq', function () {
 });
 
 Route::post('/acceptreq', 'FeeRequestController@update');
+Route::post('/acceptreqwd', 'FeeRequestController@updatewd');
 Route::post('/sendreq', 'StudentController@store');
 Route::post('/updatereq', 'StudentController@update');
 Route::post('/adminlogin', 'adminwork@login');

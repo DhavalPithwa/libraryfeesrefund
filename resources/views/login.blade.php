@@ -34,21 +34,35 @@
             <!-- Nested Row within Card Body -->
             <div class="row">
               <!-- <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> -->
-              <img src="{{URL::asset('img/login.jpg')}}" width="460" height="390">
+              <img src="{{URL::asset('img/login.jpg')}}" width="460" height="485">
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Welcome To LFRS!</h1>
                   </div>
-                  <form class="user" action="{{url('/adminlogin')}}" method="post">
+                  <form class="user" action="{{url('/adminlogin')}}" method="post" id="form">
                     @csrf
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" name="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                    <div class="form-row" style="padding: 10px;">
+                      <div class="col">
+                          <button class="btn btn-primary btn-block" onclick="stud();">
+                            Student
+                          </button>      
+                      </div>
+                      <div class="col">
+                          <button class="btn btn-primary btn-block" onclick="librarian();">
+                            Librarian
+                          </button>      
+                      </div>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password">
+                      <input type="email" class="form-control form-control-user" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter Email Address..." autofocus>
+                      <input type="text" class="form-control form-control-user" name="enroll" id="enroll" aria-describedby="emailHelp" placeholder="Enter Your Enrollment..." style="display: none;" autofocus>
+                      <input type="hidden" name="role" id="role" value="0">
                     </div>
-                    <button class="btn btn-primary btn-user btn-block">
+                    <div class="form-group">
+                      <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password">
+                    </div>
+                    <button class="btn btn-primary btn-user btn-block" id="formsubmit" onclick="submitform()">
                       Login
                     </button>
                   </form>
@@ -77,6 +91,36 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
+  <script type="text/javascript">
+    
+    function stud(){
+      var form = document.getElementById('form');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+      });
+      document.getElementById("role").value = 1;
+      document.getElementById("email").style.display = "none";
+      document.getElementById("enroll").style.display = "block";
+    }
+
+    function librarian(){
+      var form = document.getElementById('form');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+      });
+      document.getElementById("role").value = 0;
+      document.getElementById("enroll").style.display = "none";
+      document.getElementById("email").style.display = "block";
+    }
+
+    function submitform() 
+    {
+      var form = document.getElementById('form');
+      form.submit();
+    }
+    
+  </script>
 
 </body>
 

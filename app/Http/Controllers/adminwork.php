@@ -20,10 +20,6 @@ class adminwork extends Controller
     public function index()
     {
         if (Auth::user()) {
-            // $nvarifie = count(FeeRequest::where('status', 0)->get());
-            // $complete = count(FeeRequest::where('status', 3)->get());
-            // $underpay = count(FeeRequest::where('status', 1)->get());
-            // $rejected = count(FeeRequest::where('status', 2)->get());
 
             $nvdata = FeeRequest::where('status', 0)->get();
             $updata = FeeRequest::where('status', 1)->get();
@@ -65,34 +61,43 @@ class adminwork extends Controller
             $user = Student::where('enroll', $id)->first();
             return view('Admin.viewrequest', compact('user', 'data'));
         } else {
-            //return redirect()->to('/');
+            return redirect()->to('/');
         }
     }
 
 
     public function login(Request $req)
     {
-        $input = $req->only(['email'=>'email','password'=>'password']);
-        if (Auth::guard('web')->attempt($input)) {
-            // echo 'you are admin';
-            $user = Auth::user();
-            $req->session()->put(['email'=>$user['email'],'name'=>$user['name']]);
-            if ($user['type'] == 0) {
-                toast('Login As Admin', 'success')->width('20em');
-                return redirect()->to('/admin');
+        //dd($req->input());
+        if ($req->input('role') == 0) {
+            $input = $req->only(['email'=>'email','password'=>'password']);
+            if (Auth::guard('web')->attempt($input)) {
+                $user = Auth::user();
+                $req->session()->put(['email'=>$user['email'],'name'=>$user['name']]);
+                if ($user['type'] == 0) {
+                    toast('Login As Admin', 'success')->width('20em');
+                    return redirect()->to('/admin');
+                } else {
+                    toast('Login As Accountant', 'success')->width('20em');
+                    return redirect()->to('/accountent');
+                }
             } else {
-                toast('Login As Accountant', 'success')->width('20em');
-                return redirect()->to('/accountent');
-            }
-        } else if (Auth::guard('student')->attempt($input)) {
-            $user = Auth::guard('student')->user();
-            $req->session()->put(['email'=>$user['email'],'name'=>$user['name']]);
-            toast('Login As Student', 'success')->width('20em');
-            return redirect()->to('/student');
+                toast('Check Credentials', 'error')->width('20em');
+                return back();
+            }    
         } else {
-            toast('Check Credentials', 'error')->width('20em');
-            return back();
-        }
+            $input = $req->only(['enroll'=>'enroll','password'=>'password']);
+            //dd($input);
+            if (Auth::guard('student')->attempt($input)) {
+                $user = Auth::guard('student')->user();
+                $req->session()->put(['email'=>$user['email'],'name'=>$user['name']]);
+                toast('Login As Student', 'success')->width('20em');
+                return redirect()->to('/student');
+            } else {
+                toast('Check Credentials', 'error')->width('20em');
+                return back();
+            }
+        } 
     }
 
     public function addacc(Request $req)

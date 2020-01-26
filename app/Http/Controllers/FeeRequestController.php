@@ -92,6 +92,31 @@ class FeeRequestController extends Controller
         return redirect()->to('/accountent');
     }
 
+    public function updatewd(Request $request)
+    {
+        $validatedData = $request->validate([
+                'date' => 'required',
+            ]);
+        $date = explode("/", $request->input('date'));
+        $date = $date[1]."-".$date[0]."-".$date['2'];
+        $user = Auth::user();
+        $name = $user->id."-".$user->name;
+        $tidcount = 0;
+        //dd($name);
+        foreach ($request->input('check') as $data ) {
+            $req = FeeRequest::where('enroll', $data)->first();
+            $req->status = 3;
+            $req->completedby = $name;
+            $req->tran_id = $request->input('tid')[$tidcount];
+            $req->reason = "Completed";
+            $req->paydate = $date;
+            $req->save();   
+            $tidcount = $tidcount + 1; 
+        }
+        Alert::success('Accept Request', 'Request Accept & Transaction Id Saved..');
+        return redirect()->to('/accountent');
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -25,6 +25,7 @@ class CreateFeeRequestsTable extends Migration
             $table->string('gtugrade_path');
             $table->integer('status');
             $table->string('completedby')->nullable();
+            $table->string('paydate')->nullable();
             $table->string('reason')->nullable();
             $table->string('tran_id')->nullable();
             $table->integer('amount');
