@@ -66,7 +66,7 @@
                     <tr>
                       <td name="requestenroll">{{$upd->enroll}}</td>
                       <td>{{$upd->name}}</td>
-                      <td>{{$upd->lfees_path}}</td>
+                      <td>{{$upd->lfees_no}}</td>
                       @if ($upd->lfees_path == null or $upd->sem6fee_path == null or $upd->passbook_path == null or $upd->cheque_path == null or $upd->gtugrade_path == null)
                       <td>Documents Missing</td>
                       @else 
@@ -74,19 +74,19 @@
                       @endif
                       <td>{{$upd->amount}}</td>
                       <td>
-                        <input type="text" class="form-control" name="tid[]" placeholder="Enter Transaction Id">
+                        <input type="text" class="form-control" name="{{$upd->enroll}}" id="tid" placeholder="Enter Transaction Id For {{$upd->name}}">
                       </td>
                       <td>
-						<label class="container">
-						  <input type="checkbox" name="check[]" value="{{$upd->enroll}}">
-						  <span class="checkmark"></span>
-						</label>
+            						<label class="container">
+            						  <input type="checkbox" name="check[]" value="{{$upd->enroll}}" id="checkboxid" onchange="checkform()">
+            						  <span class="checkmark"></span>
+            						</label>
                       </td>
                     </tr>
                     @endforeach
                   </tbody>
                 </table><br>
-                <button class="btn btn-primary btn-user" name="btnaccwd"  id="btnaccwd" style="float: right; width: 180px; height: 40px; ">
+                <button class="btn btn-primary btn-user" name="btnaccwd"  id="btnaccwd" style="float: right; width: 180px; height: 40px;">
                     	Submit
                 </button>
               </div>

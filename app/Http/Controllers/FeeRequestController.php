@@ -94,6 +94,7 @@ class FeeRequestController extends Controller
 
     public function updatewd(Request $request)
     {
+        //dd($request->input());
         $validatedData = $request->validate([
                 'date' => 'required',
             ]);
@@ -103,15 +104,15 @@ class FeeRequestController extends Controller
         $name = $user->id."-".$user->name;
         $tidcount = 0;
         //dd($name);
-        foreach ($request->input('check') as $data ) {
+        foreach ($request->input('check') as $data) {
             $req = FeeRequest::where('enroll', $data)->first();
             $req->status = 3;
             $req->completedby = $name;
-            $req->tran_id = $request->input('tid')[$tidcount];
+            $req->tran_id = $request->input($data);
             $req->reason = "Completed";
             $req->paydate = $date;
-            $req->save();   
-            $tidcount = $tidcount + 1; 
+            $req->save();
+            $tidcount = $tidcount + 1;
         }
         Alert::success('Accept Request', 'Request Accept & Transaction Id Saved..');
         return redirect()->to('/accountent');

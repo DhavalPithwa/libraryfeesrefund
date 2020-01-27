@@ -42,16 +42,16 @@
                   </div>
                   <form class="user" action="{{url('/adminlogin')}}" method="post" id="form">
                     @csrf
-                    <div class="form-row" style="padding: 10px;">
-                      <div class="col">
-                          <button class="btn btn-primary btn-block" onclick="stud();">
-                            Student
-                          </button>      
+                    <div class="form-row">
+                      <div class="form-check-inline" style="margin-left: 30px;">
+                        <label class="text-gray-900 mb-4" style="font-size:19px;">
+                          <input type="radio" class="form-check-input" name="optradio" style="width: 20px; height: 15px;" onclick="stud()">Student
+                        </label>
                       </div>
-                      <div class="col">
-                          <button class="btn btn-primary btn-block" onclick="librarian();">
-                            Librarian
-                          </button>      
+                      <div class="form-check-inline" style="font-size:19px;">
+                        <label class="text-gray-900 mb-4">
+                          <input type="radio" class="form-check-input" name="optradio" checked style="width: 20px; height: 15px;" onclick="librarian()">Librarian/Accountant
+                        </label>
                       </div>
                     </div>
                     <div class="form-group">
@@ -95,20 +95,12 @@
   <script type="text/javascript">
     
     function stud(){
-      var form = document.getElementById('form');
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-      });
       document.getElementById("role").value = 1;
       document.getElementById("email").style.display = "none";
       document.getElementById("enroll").style.display = "block";
     }
 
     function librarian(){
-      var form = document.getElementById('form');
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-      });
       document.getElementById("role").value = 0;
       document.getElementById("enroll").style.display = "none";
       document.getElementById("email").style.display = "block";
