@@ -184,7 +184,11 @@
                       @else 
                       <td>All Documents Submited</td>
                       @endif
+                      @if($cmd->tran_id == null)
+                      <td>Not Given</td>
+                      @else
                       <td>{{$cmd->tran_id}}</td>
+                      @endif
                       <td>{{$cmd->completedby}}</td>
                       <td>{{$cmd->amount}}</td>
                     </tr>

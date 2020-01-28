@@ -26,7 +26,7 @@
 
 
        <!-- Table Start -->
-<form action="{{url('/acceptreqwd')}}" method="post" id="form">
+<form action="{{url('/acceptreqwd')}}" method="post" id="form" autocomplete="off">
        <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Under Payment Requests</h6>

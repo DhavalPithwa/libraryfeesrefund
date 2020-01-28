@@ -49,30 +49,34 @@
                       <td>{{$data['enroll']}}</td>
                       <td>{{$data['lfees_no']}}</td>
                       @if($data['status'] == 0)
-                      <td>Not Verified</td>
+                        <td>Not Verified</td>
                       @elseif ($data['status'] == 1)
-                      <td>Under Payment</td>
+                        <td>Under Payment</td>
                       @elseif ($data['status'] == 2)
-                      <td>Rejetced</td>
+                        <td>Rejetced</td>
                       @elseif ($data['status'] == 3)
-                      <td>Complete</td>
+                        <td>Complete</td>
                       @endif
-                      <td>{{$data['amount']}}</td>
+                        <td>{{$data['amount']}}</td>
                       @if($data['status'] == 0)
-                      <td>
-                        <a href="{{url('/editreq')}}" class="btn btn-primary btn-icon-split">
-                        <span class="icon text-white-50">
-                          <i class="fas fa-edit"></i>
-                        </span>
-                        <span class="text">Edit Request</span>
-                        </a>
-                      </td>
+                        <td>
+                          <a href="{{url('/editreq')}}" class="btn btn-primary btn-icon-split">
+                          <span class="icon text-white-50">
+                            <i class="fas fa-edit"></i>
+                          </span>
+                          <span class="text">Edit Request</span>
+                          </a>
+                        </td>
                       @elseif ($data['status'] == 2)
-                      <td>{{$data['reason']}}</td>
+                        <td>{{$data['reason']}}</td>
                       @elseif ($data['status'] == 3)
-                      <td>{{$data['tran_id']}}</td>
+                        @if($data['tran_id'] == null)
+                          <td>Not Given</td>
+                        @else
+                          <td>{{$data['tran_id']}}</td>
+                        @endif
                       @else
-                      <td>Request Can't Editable.<b>Contact To Admin.</b></td>
+                        <td>Request Can't Editable.<b>Contact To Admin.</b></td>
                       @endif
                     </tr>
                   </tbody>
