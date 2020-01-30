@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Exports\StudentExport;
 use RealRashid\SweetAlert\Facades\Alert;
+use Carbon\Carbon;
 
 class adminwork extends Controller
 {
@@ -66,6 +67,35 @@ class adminwork extends Controller
     }
 
 
+    public function report()
+    {
+        if (Auth::user()) {
+            $nvdata = FeeRequest::where('status', 0)->whereMonth('created_at', Carbon::now()->month)->get();
+            $updata = FeeRequest::where('status', 1)->whereMonth('created_at', Carbon::now()->month)->get();
+            $rjdata = FeeRequest::where('status', 2)->whereMonth('created_at', Carbon::now()->month)->get();
+            $cmdata = FeeRequest::where('status', 3)->whereMonth('paydate', Carbon::now()->month)->get();
+            return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+
+    public function datechnagerept(Request $req)
+    {
+        if (Auth::user()) {
+            $month = explode('-', $req->input('date'));
+            $nvdata = FeeRequest::where('status', 0)->whereMonth('created_at', $month[0])->get();
+            $updata = FeeRequest::where('status', 1)->whereMonth('created_at', $month[0])->get();
+            $rjdata = FeeRequest::where('status', 2)->whereMonth('created_at', $month[0])->get();
+            $cmdata = FeeRequest::where('status', 3)->whereMonth('paydate', $month[0])->get();
+            return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+
     public function login(Request $req)
     {
         //dd($req->input());
@@ -84,7 +114,7 @@ class adminwork extends Controller
             } else {
                 toast('Check Credentials', 'error')->width('20em');
                 return back();
-            }    
+            }
         } else {
             $input = $req->only(['enroll'=>'enroll','password'=>'password']);
             //dd($input);
@@ -97,7 +127,7 @@ class adminwork extends Controller
                 toast('Check Credentials', 'error')->width('20em');
                 return back();
             }
-        } 
+        }
     }
 
     public function addacc(Request $req)

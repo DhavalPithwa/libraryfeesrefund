@@ -68,7 +68,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                  <a class="h4 mb-0 text-gray-800" href="{{url('forgotpass')}}">Forgot Password ?</a>
                   </div>
                 </div>
               </div>

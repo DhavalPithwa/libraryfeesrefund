@@ -13,11 +13,11 @@
   <title>@yield('title',"LFRS")</title>
 
   <!-- Custom fonts for this template-->
-  <link href="{{url('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-  <link href="{{url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -27,6 +27,82 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<style>
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  margin-left: 25px;
+  margin-top: 5px;
+  top: 0;
+  left: 0;
+  height: 28px;
+  width: 28px;
+  background-color: #ccc;
+  border-radius: 20px;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 8px;
+  height: 16px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+</style>
 
 </head>
 
@@ -77,6 +153,15 @@
           <span>Add Accountent</span></a>
       </li>
 
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="{{url('/admin_report')}}">
+          <i class="fas fa-search-plus"></i>
+          <span>Statistical Data</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -196,6 +281,10 @@
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
 
+   <script src="https://cdn.rawgit.com/atatanasov/gijgo/master/dist/combined/js/gijgo.min.js" type="text/javascript"></script>
+  <link href="https://cdn.rawgit.com/atatanasov/gijgo/master/dist/combined/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+
   <script>
     // Add the following code if you want the name of the file appear on select
     $(".custom-file-input").on("change", function() {
@@ -272,7 +361,6 @@
         $("#nvtable").hide("slow");
         $("#rjtable").hide("slow");
         $("#uptable").hide("slow");
-        document.getElementById("cmtable").style.visibility = "visible";
         $("#cmtable").show(2000);
       }
 
@@ -281,7 +369,6 @@
         $("#cmtable").hide("slow");
         $("#rjtable").hide("slow");
         $("#nvtable").hide("slow");
-        document.getElementById("uptable").style.visibility = "visible";
         $("#uptable").show(2000);
       }
 
@@ -290,7 +377,6 @@
         $("#cmtable").hide("slow");
         $("#nvtable").hide("slow");
         $("#uptable").hide("slow");
-        document.getElementById("rjtable").style.visibility = "visible";
         $("#rjtable").show(2000);
       }
 
@@ -319,6 +405,21 @@
               }
             });
         }
+
+    $(document).ready(function () {
+        $('#datepicker').datepicker({
+          uiLibrary: 'bootstrap',
+          viewMode: "months", 
+          minViewMode: "months",
+          format: 'mm-yyyy'
+        });
+    });
+
+    function submitform()
+    {
+      var form = document.getElementById('form');
+      form.submit();
+    }
   </script>
 
 </body>

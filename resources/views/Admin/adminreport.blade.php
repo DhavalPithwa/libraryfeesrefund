@@ -12,7 +12,13 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800"><b>Home</b></h1>
           </div>
-
+          <form action="{{url('/chnagedaterept')}}" method="post" id="form" autocomplete="off">
+              @csrf
+            <div class="form-group">
+                      <label class="h5 mb-0 text-gray-800">Select Date</label>
+                <input id="datepicker" width="270" name="date" onchange="submitform()" />
+              </div>
+            </form>
           <!-- Content Row -->
           <div class="row">
 
