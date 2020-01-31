@@ -182,28 +182,28 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{{url('vendor/jquery/jquery.min.js')}}"></script>
+  <script src="{{url('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="{{url('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+  <script src="{{url('js/sb-admin-2.min.js')}}"></script>
 
   <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="{{url('vendor/chart.js/Chart.min.js')}}"></script>
 
   <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
+  <script src="{{url('js/demo/chart-area-demo.js')}}"></script>
+  <script src="{{url('js/demo/chart-pie-demo.js')}}"></script>
 
   <!-- Page level plugins -->
-  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="{{url('vendor/datatables/jquery.dataTables.min.js')}}"></script>
+  <script src="{{url('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
   <!-- Page level custom scripts -->
-  <script src="js/demo/datatables-demo.js"></script>
+  <script src="{{url('js/demo/datatables-demo.js')}}"></script>
 
   <script>
     // Add the following code if you want the name of the file appear on select
@@ -344,13 +344,13 @@
     document.getElementById("year").innerHTML = options;
 
     function f1(objButton){  
-        var form = document.getElementById('form');
-        var month = document.getElementById('month');
-        form.addEventListener('submit', function(e) {
-          e.preventDefault();
-        });
-        month.value = objButton.value;
-        form.submit();
+        var year = document.getElementById('year');
+        var months = objButton.value;
+        var ye = year.value;
+        let url = "{{ route('chnagedaterept', [":month", ":year"]) }}";
+        url = url.replace(':month', months);
+        url = url.replace(':year', ye);  
+        window.location.href=url;
     }
 
   </script>

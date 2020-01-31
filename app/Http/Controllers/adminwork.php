@@ -10,6 +10,7 @@ use Auth;
 use Excel;
 use Route;
 use Response;
+use Storage;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Exports\StudentExport;
@@ -104,11 +105,11 @@ class adminwork extends Controller
     }
 
 
-    public function datechnagerept(Request $req)
+    public function datechnagerept($month,$year)
     {
-        //dd($req->input());
-        $month = $req->input('month');
-        $year = $req->input('year');
+        // //dd($req->input());
+        // $month = $req->input('month');
+        // $year = $req->input('year');
         //dd($year);
         if (Auth::user()) {
             $nvdata = FeeRequest::where('status', 0)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
@@ -321,10 +322,8 @@ class adminwork extends Controller
         $headers = array(
             'Content-Type' => 'text/csv',
         );
-        //dd($cmdata);
-        Response::download($filename, $filename, $headers);
-        return back();
-        //return redirect()->to('/admin_report');
+        return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
+        
     }
 
     public function upexport($month, $year)
@@ -352,8 +351,7 @@ class adminwork extends Controller
             'Content-Type' => 'text/csv',
         );
         //dd($cmdata);
-        Response::download($filename, $filename, $headers);
-        return redirect()->to('/admin_report');
+        return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
     }
 
     public function nvexport($month, $year)
@@ -381,8 +379,8 @@ class adminwork extends Controller
             'Content-Type' => 'text/csv',
         );
         //dd($cmdata);
-        Response::download($filename, $filename, $headers);
-        return redirect()->to('/admin_report');
+        //toast('Students Data Downloaded.', 'success')->width('22em');
+        return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
     }
 
     public function rjexport($month, $year)
@@ -410,10 +408,7 @@ class adminwork extends Controller
             'Content-Type' => 'text/csv',
         );
         //dd($cmdata);
-        toast('Complete Request Data Downloaded.', 'success')->width('22em');
-        Response::download($filename, $filename, $headers);
-        return redirect()->to('/admin_report');
-        //return Excel::download(new StudentExport, 'students.xlsx');
+        return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
     }
 
 

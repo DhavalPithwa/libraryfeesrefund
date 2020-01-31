@@ -129,7 +129,7 @@ Route::get('/editreq', function () {
 });
 
 Route::get('/admin_report', 'adminwork@report');
-Route::post('/chnagedaterept', 'adminwork@datechnagerept');
+Route::get('/chnagedaterept/{month}/{year}', 'adminwork@datechnagerept')->name('chnagedaterept');;
 Route::post('/acceptreq', 'FeeRequestController@update');
 Route::post('/acceptreqwd', 'FeeRequestController@updatewd');
 Route::post('/sendreq', 'StudentController@store');

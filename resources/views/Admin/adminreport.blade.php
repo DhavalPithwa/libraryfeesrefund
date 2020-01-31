@@ -12,7 +12,7 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800"><b>Statistical Data</b></h1>
           </div>
-          <form action="{{url('/chnagedaterept')}}" method="post" id="form">
+          <!-- <form action="{{url('/chnagedaterept')}}" method="post" id="form"> -->
               @csrf
               <div class="row">
                   <div class="col-xl-12 col-lg-8">
@@ -31,25 +31,21 @@
               </select>
           </div>
           <div class="col">
-              <div class="dropdown" style="margin-bottom: 10px;">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;">
-                  Select Month Name 
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" style="font-size: 20px;">
-                  <button class="dropdown-item" onclick='f1(this)' value="01">January</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="02">February</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="03">March</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="04">April</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="05">May</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="06">June</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="07">July</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="08">August</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="09">September</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="10">October</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="11">November</button>
-                  <button class="dropdown-item" onclick='f1(this)' value="12">December</button>
-                </div>
-              </div>
+              <select class="form-control" id="year" name="year" style="font-size: 20px; width: 245px; background: #4e73df; border-color: #4e73df; color: white;" onchange="f1(this)">
+                <option  value="">Select Month</option>
+                <option  value="01">January</option>
+                <option  value="02">February</option>
+                <option  value="03">March</option>
+                <option  value="04">April</option>
+                <option  value="05">May</option>
+                <option  value="06">June</option>
+                <option  value="07">July</option>
+                <option  value="08">August</option>
+                <option  value="09">September</option>
+                <option  value="10">Octomber</option>
+                <option  value="11">November</option>
+                <option  value="12">December</option>
+              </select>
          </div>
     
                     </div>
@@ -57,7 +53,7 @@
               </div>
             </div>
               <input type="hidden" name="month" id="month"> 
-          </form>
+          <!-- </form> -->
           <hr>
           <!-- Content Row -->
           <div class="row">
