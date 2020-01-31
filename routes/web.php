@@ -140,4 +140,8 @@ Route::post('/passorrejectreq', 'adminwork@passorrejectreq');
 Route::post('/addstud', 'adminwork@addstud');
 Route::post('/chnagepass', 'adminwork@chnagepass');
 Route::get('/export', 'adminwork@export')->name('export');
+Route::get('/cmexport/{month}/{year}', 'adminwork@cmexport');
+Route::get('/nvexport/{month}/{year}', 'adminwork@nvexport');
+Route::get('/upexport/{month}/{year}', 'adminwork@upexport');
+Route::get('/rjexport/{month}/{year}', 'adminwork@rjexport');
 Route::post('/import', 'adminwork@import')->name('import');

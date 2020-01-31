@@ -1,6 +1,6 @@
 @extends('Admin.adminlayout')
 
-@section('title','Admin - Home')
+@section('title','Admin - Report')
 
 
 @section('content')
@@ -10,15 +10,55 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"><b>Home</b></h1>
+            <h1 class="h3 mb-0 text-gray-800"><b>Statistical Data</b></h1>
           </div>
-          <form action="{{url('/chnagedaterept')}}" method="post" id="form" autocomplete="off">
+          <form action="{{url('/chnagedaterept')}}" method="post" id="form">
               @csrf
-            <div class="form-group">
-                      <label class="h5 mb-0 text-gray-800">Select Date</label>
-                <input id="datepicker" width="270" name="date" onchange="submitform()" />
+              <div class="row">
+                  <div class="col-xl-12 col-lg-8">
+                      <div class="">
+                            <div class="form-row" style="padding: 10px;">
+          <div class="col">
+              <h3 class="h3 mb-0 text-gray-800"><b>Selected Month</b></h3><br>
+              <h4 class="h5 mb-0 text-gray-800"><label>{{$month}}</label></h3>
+          </div>
+          <div class="col">
+              <h3 class="h3 mb-0 text-gray-800"><b>Selected Year</b></h3><br>
+              <h4 class="h5 mb-0 text-gray-800"><label>{{$year}}</label></h3>
+          </div>
+          <div class="col">
+              <select class="form-control" id="year" name="year" style="font-size: 20px; width: 245px; background: #4e73df; border-color: #4e73df; color: white;">
+              </select>
+          </div>
+          <div class="col">
+              <div class="dropdown" style="margin-bottom: 10px;">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;">
+                  Select Month Name 
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" style="font-size: 20px;">
+                  <button class="dropdown-item" onclick='f1(this)' value="01">January</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="02">February</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="03">March</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="04">April</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="05">May</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="06">June</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="07">July</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="08">August</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="09">September</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="10">October</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="11">November</button>
+                  <button class="dropdown-item" onclick='f1(this)' value="12">December</button>
+                </div>
               </div>
-            </form>
+         </div>
+    
+                    </div>
+                  </div>
+              </div>
+            </div>
+              <input type="hidden" name="month" id="month"> 
+          </form>
+          <hr>
           <!-- Content Row -->
           <div class="row">
 
@@ -97,6 +137,14 @@
               <h6 class="m-0 font-weight-bold text-primary">Not Varifiled Requests</h6>
             </div>
             <div class="card-body">
+      @if($nvdata->count() > 0)
+      <a href='{{url("/nvexport/$month/$year")}}' class="btn btn-secondary btn-icon-split" style="float: right;">
+        <span class="icon text-white-50">
+          <i class="fas fa-download"></i>
+        </span>
+        <span class="text">Export</span>
+      </a>
+      @endif
               <div class="">
                 <table class="table table-bordered" id="dtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead style="widows: 100%;">
@@ -107,8 +155,6 @@
                       <th>Library Fee Number</th>
                       <th>Documents</th>
                       <th>Amount</th>
-                      <th>View</th>
-                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -119,8 +165,6 @@
                       <th>Library Fee Number</th>
                       <th>Documents</th>
                       <th>Amount</th>
-                      <th>View</th>
-                      <th>Delete</th>
                     </tr>
                   </tfoot>
                   <tbody>
@@ -136,8 +180,6 @@
                       <td>All Documents Submited</td>
                       @endif
                       <td>{{$nvd->amount}}</td>
-                      <td><a href='{{url("/viewreqdetail/$nvd->enroll")}}'><img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30"></a></td>
-                    <td><a onclick="confirmation(event)" href='{{url("/deletedetail/$nvd->enroll")}}'><img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30"></a></td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -152,6 +194,14 @@
               <h6 class="m-0 font-weight-bold text-primary">Completed Requests</h6>
             </div>
             <div class="card-body">
+      @if($cmdata->count() > 0)
+      <a href='{{url("/cmexport/$month/$year")}}' class="btn btn-secondary btn-icon-split" style="float: right;">
+        <span class="icon text-white-50">
+          <i class="fas fa-download"></i>
+        </span>
+        <span class="text">Export</span>
+      </a>
+      @endif
               <div class="">
                 <table class="table table-bordered" id="cmdtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
@@ -211,6 +261,14 @@
               <h6 class="m-0 font-weight-bold text-primary">Under Payment Requests</h6>
             </div>
             <div class="card-body">
+      @if($updata->count() > 0)
+      <a href='{{url("/upexport/$month/$year")}}' class="btn btn-secondary btn-icon-split" style="float: right;">
+        <span class="icon text-white-50">
+          <i class="fas fa-download"></i>
+        </span>
+        <span class="text">Export</span>
+      </a>
+      @endif
               <div class="">
                 <table class="table table-bordered" id="updtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
@@ -259,6 +317,14 @@
               <h6 class="m-0 font-weight-bold text-primary">Rejected Requests</h6>
             </div>
             <div class="card-body">
+      @if($rjdata->count() > 0)
+      <a href='{{url("/rjexport/$month/$year")}}' class="btn btn-secondary btn-icon-split" style="float: right;">
+        <span class="icon text-white-50">
+          <i class="fas fa-download"></i>
+        </span>
+        <span class="text">Export</span>
+      </a>
+      @endif
               <div class="">
                 <table class="table table-bordered" id="rjdtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>

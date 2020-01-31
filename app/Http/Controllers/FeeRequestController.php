@@ -98,8 +98,8 @@ class FeeRequestController extends Controller
         $validatedData = $request->validate([
                 'date' => 'required',
             ]);
-        $date = explode("/", $request->input('date'));
-        $date = $date[1]."-".$date[0]."-".$date['2'];
+        $date = date("Y-m-d", strtotime($request->input('date')));
+        //dd($date);
         $user = Auth::user();
         $name = $user->id."-".$user->name;
         $tidcount = 0;

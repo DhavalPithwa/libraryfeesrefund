@@ -9,6 +9,7 @@ use Hash;
 use Auth;
 use Excel;
 use Route;
+use Response;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Exports\StudentExport;
@@ -69,12 +70,34 @@ class adminwork extends Controller
 
     public function report()
     {
+        $month = Carbon::now()->month;
+        $year = Carbon::now()->year;
         if (Auth::user()) {
-            $nvdata = FeeRequest::where('status', 0)->whereMonth('created_at', Carbon::now()->month)->get();
-            $updata = FeeRequest::where('status', 1)->whereMonth('created_at', Carbon::now()->month)->get();
-            $rjdata = FeeRequest::where('status', 2)->whereMonth('created_at', Carbon::now()->month)->get();
-            $cmdata = FeeRequest::where('status', 3)->whereMonth('paydate', Carbon::now()->month)->get();
-            return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata'));
+            $nvdata = FeeRequest::where('status', 0)->whereYear('created_at', '=', $year)->whereMonth('created_at', $month)->get();
+            $updata = FeeRequest::where('status', 1)->whereYear('created_at', '=', $year)->whereMonth('created_at', $month)->get();
+            $rjdata = FeeRequest::where('status', 2)->whereYear('created_at', '=', $year)->whereMonth('created_at', $month)->get();
+            $cmdata = FeeRequest::where('status', 3)->whereYear('paydate', '=', $year)->whereMonth('paydate', $month)->get();
+            foreach ($nvdata as $d) {
+                $name = Student::where('enroll', $d->enroll)->select('name')->first();
+                //dd($name->name);
+                $d->name = $name->name;
+            }
+            foreach ($updata as $upd) {
+                $name = Student::where('enroll', $upd->enroll)->select('name')->first();
+                //dd($name->name);
+                $upd->name = $name->name;
+            }
+            foreach ($rjdata as $rjd) {
+                $name = Student::where('enroll', $rjd->enroll)->select('name')->first();
+                //dd($name->name);
+                $rjd->name = $name->name;
+            }
+            foreach ($cmdata as $cmd) {
+                $name = Student::where('enroll', $cmd->enroll)->select('name')->first();
+                //dd($name->name);
+                $cmd->name = $name->name;
+            }
+            return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata', 'month', 'year'));
         } else {
             return redirect()->to('/');
         }
@@ -83,13 +106,36 @@ class adminwork extends Controller
 
     public function datechnagerept(Request $req)
     {
+        //dd($req->input());
+        $month = $req->input('month');
+        $year = $req->input('year');
+        //dd($year);
         if (Auth::user()) {
-            $month = explode('-', $req->input('date'));
-            $nvdata = FeeRequest::where('status', 0)->whereMonth('created_at', $month[0])->get();
-            $updata = FeeRequest::where('status', 1)->whereMonth('created_at', $month[0])->get();
-            $rjdata = FeeRequest::where('status', 2)->whereMonth('created_at', $month[0])->get();
-            $cmdata = FeeRequest::where('status', 3)->whereMonth('paydate', $month[0])->get();
-            return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata'));
+            $nvdata = FeeRequest::where('status', 0)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
+            $updata = FeeRequest::where('status', 1)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
+            $rjdata = FeeRequest::where('status', 2)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
+            $cmdata = FeeRequest::where('status', 3)->whereYear('paydate', $year)->whereMonth('paydate', $month)->get();
+            foreach ($nvdata as $d) {
+                $name = Student::where('enroll', $d->enroll)->select('name')->first();
+                //dd($name->name);
+                $d->name = $name->name;
+            }
+            foreach ($updata as $upd) {
+                $name = Student::where('enroll', $upd->enroll)->select('name')->first();
+                //dd($name->name);
+                $upd->name = $name->name;
+            }
+            foreach ($rjdata as $rjd) {
+                $name = Student::where('enroll', $rjd->enroll)->select('name')->first();
+                //dd($name->name);
+                $rjd->name = $name->name;
+            }
+            foreach ($cmdata as $cmd) {
+                $name = Student::where('enroll', $cmd->enroll)->select('name')->first();
+                //dd($name->name);
+                $cmd->name = $name->name;
+            }
+            return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata', 'month', 'year'));
         } else {
             return redirect()->to('/');
         }
@@ -246,6 +292,130 @@ class adminwork extends Controller
         toast('Students Data Downloaded.', 'success')->width('22em');
         return Excel::download(new StudentExport, 'students.xlsx');
     }
+
+    public function cmexport($month, $year)
+    {
+        //dd($year);
+        $cmdata = FeeRequest::where('status', 3)->whereYear('paydate', $year)->whereMonth('paydate', $month)->get();
+        foreach ($cmdata as $cmd) {
+                $name = Student::where('enroll', $cmd->enroll)->select('name')->first();
+                //dd($name->name);
+                $cmd->name = $name->name;
+        }
+        $filename = "completedreq_".$month."_".$year.".csv";
+        //dd($cmdata);
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, array('Req_id', 'enroll', 'name', 'lfees_no', 'Status', 'completedby', 'paydate', 'tran_id', 'amount'));
+
+        foreach ($cmdata as $row) {
+            if ($row['tran_id'] != null) {
+                fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'],
+                    "Completed", $row['completedby'], $row['paydate'], $row['tran_id'], $row['amount']));
+            } else {
+                fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'], $row['completedby'], $row['paydate'], "NULL", $row['amount']));
+            }
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+        //dd($cmdata);
+        Response::download($filename, $filename, $headers);
+        return back();
+        //return redirect()->to('/admin_report');
+    }
+
+    public function upexport($month, $year)
+    {
+        //dd($month);
+        $updata = FeeRequest::where('status', 1)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
+        
+        foreach ($updata as $upd) {
+                $name = Student::where('enroll', $upd->enroll)->select('name')->first();
+                //dd($name->name);
+                $upd->name = $name->name;
+        }
+        $filename = "underpaymentreq_".$month."_".$year.".csv";
+        //dd($updata);
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, array('Req_id', 'enroll', 'name', 'lfees_no', 'Status', 'amount'));
+
+        foreach ($updata as $row) {
+            fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'], "Under Payment", $row['amount']));
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+        //dd($cmdata);
+        Response::download($filename, $filename, $headers);
+        return redirect()->to('/admin_report');
+    }
+
+    public function nvexport($month, $year)
+    {
+        //dd($month);
+        $nvdata = FeeRequest::where('status', 0)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
+        
+        foreach ($nvdata as $nvd) {
+                $name = Student::where('enroll', $nvd->enroll)->select('name')->first();
+                //dd($name->name);
+                $nvd->name = $name->name;
+        }
+        $filename = "notvarifiedreq_".$month."_".$year.".csv";
+        //dd($updata);
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, array('Req_id', 'enroll', 'name', 'lfees_no', 'Status', 'amount'));
+
+        foreach ($nvdata as $row) {
+            fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'], "Not Varified Yet", $row['amount']));
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+        //dd($cmdata);
+        Response::download($filename, $filename, $headers);
+        return redirect()->to('/admin_report');
+    }
+
+    public function rjexport($month, $year)
+    {
+        //dd($month);
+        $rjdata = FeeRequest::where('status', 2)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
+        
+        foreach ($rjdata as $rjd) {
+                $name = Student::where('enroll', $rjd->enroll)->select('name')->first();
+                //dd($name->name);
+                $rjd->name = $name->name;
+        }
+        $filename = "rejectedreq_".$month."_".$year.".csv";
+        //dd($updata);
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, array('Req_id', 'enroll', 'name', 'lfees_no', 'Status', 'Reason', 'amount'));
+
+        foreach ($rjdata as $row) {
+            fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'], "Rejeted", $row['reason'], $row['amount']));
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+        //dd($cmdata);
+        toast('Complete Request Data Downloaded.', 'success')->width('22em');
+        Response::download($filename, $filename, $headers);
+        return redirect()->to('/admin_report');
+        //return Excel::download(new StudentExport, 'students.xlsx');
+    }
+
 
     public function logout(Request $req)
     {
