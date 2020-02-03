@@ -4,7 +4,11 @@
 
 
 @section('content')
-  
+  <style type="text/css">
+    img:hover{
+      cursor: pointer;
+    }
+  </style>
   <div class="container-fluid" >
 
     <!-- Page Heading -->

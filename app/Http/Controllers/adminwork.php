@@ -240,12 +240,15 @@ class adminwork extends Controller
                 ]);
             }
             $request = FeeRequest::where('enroll', $req->input('reqenroll'))->first();
-            if ($req->input('reject_reason') == null) {
+            if ($req->input('reject_reason') == null and $req->input('rejectclick') < 1) {
                 if ($req->input('pendingbook') != null) {
                     $books = explode(',', $req->input('pendingbook'));
+                    //dd($books);
                     foreach ($books as $value) {
                         $key = explode('-', $value);
-                        $request->amount = $request->amount - (int)$key[1];
+                        if (count($key) >= 2) {
+                            $request->amount = $request->amount - (int)$key[1];
+                        }
                     }
                 }
                 //dd($request->amount);
