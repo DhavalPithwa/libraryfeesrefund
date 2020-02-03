@@ -29,17 +29,21 @@
           <div class="col-lg-7">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" name="name" placeholder="First Name">
+                    <input type="hidden" name="accid" id="accid">
+                    <input type="text" class="form-control form-control-user" name="name" placeholder="Enter Name" id="name">
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" name="number" placeholder="Mobile Number">
+                    <input type="text" class="form-control form-control-user" name="number" placeholder="Mobile Number" id="number">
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" name="email" placeholder="Email Address">
+                  <input type="email" class="form-control form-control-user" name="email" placeholder="Email Address" id="email">
                 </div>
-                <button class="btn btn-primary btn-user btn-block">
+                <button class="btn btn-primary btn-user btn-block" id="add">
                   Add
+                </button>
+                <button class="btn btn-primary btn-user btn-block" style="display: none;" id="update">
+                  Update
                 </button>
           </div>
         </div><br>
@@ -53,13 +57,15 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dtHorizontalVerticalExample" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dtHorizontalVerticalExample" width="100%" cellspacing="0"style="text-align:center;">
                   <thead>
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>Mobile No</th>
+                      <th>View</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -68,6 +74,8 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>Mobile No</th>
+                      <th>View</th>
+                      <th>Delete</th>
                     </tr>
                   </tfoot>
                   <tbody>
@@ -77,6 +85,12 @@
                       <td>{{$d->name}}</td>
                       <td>{{$d->email}}</td>
                       <td>{{$d->phone_no}}</td>
+                      <td>
+                        <img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30" onclick="editacc({{$d}})">
+                      </td>
+                      <td>
+                        <a onclick="confirmation(event)" href='{{url("/deleteaccdetail/$d->id")}}'><img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30"></a>
+                      </td>
                     </tr>
                     @endforeach
                   </tbody>

@@ -255,8 +255,22 @@
         e.preventDefault();
       });
       document.getElementById("rejectclick").value = 1;
+      document.getElementById("h3reason").innerHTML = "Reason";
       document.getElementById("h3reason").style.display = "block";
       document.getElementById("textreason").style.display = "block";
+    }
+
+    function pnddingbook()
+    {
+     var form = document.getElementById('form');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+      });
+      document.getElementById("rejectclick").value = 2;
+      document.getElementById("h3reason").innerHTML = "Enter Pending Books";
+      document.getElementById("textreason").placeholder = "Book_name-Book_price,";
+      document.getElementById("h3reason").style.display = "block";
+      document.getElementById("textreason").style.display = "block"; 
     }
 
     function formsubmit() {
@@ -298,6 +312,18 @@
         $("#nvtable").hide("slow");
         $("#uptable").hide("slow");
         $("#rjtable").show(2000);
+      }
+
+      function showform() 
+      {
+        document.getElementById("tablediv").style.display = "none";
+        document.getElementById("form").style.display = "block";
+      }
+
+      function showtable() 
+      {
+        document.getElementById("tablediv").style.display = "block";
+        document.getElementById("form").style.display = "none";
       }
 
   </script>
@@ -351,6 +377,65 @@
         url = url.replace(':month', months);
         url = url.replace(':year', ye);  
         window.location.href=url;
+    }
+
+    function chcourse(objButton){  
+        var course = document.getElementById('course');
+        if(course.value == "MCA")
+        {
+          var options = "";
+          for(var sem = 1 ; sem <= 6; sem++){
+            options += "<option>"+ sem +"</option>";
+          }
+          document.getElementById("sem").innerHTML = options;
+        }
+        else
+        {
+          var options = "";
+          for(var sem = 1 ; sem <= 10; sem++){
+            options += "<option>"+ sem +"</option>";
+          }
+          document.getElementById("sem").innerHTML = options;
+        }
+    }
+
+    function updatecourse(objButton){  
+        var course = document.getElementById('course');
+        var semvl = document.getElementById('semval').value;
+        if(course.value == "MCA")
+        {
+          var options = "";
+          options += "<option>"+ semvl +"</option>";
+          for(var sem = 1 ; sem <= 6; sem++){
+            if(sem != semvl) {
+              options += "<option>"+ sem +"</option>";
+            }
+          }
+          document.getElementById("sem").innerHTML = options;
+        }
+        else
+        {
+          var options = "";
+          options += "<option>"+ semvl +"</option>";
+          for(var sem = 1 ; sem <= 10; sem++){
+            if(sem != semvl) {
+              options += "<option>"+ sem +"</option>";
+            }
+          }
+          document.getElementById("sem").innerHTML = options;
+        }
+    }
+
+    function editacc(id)
+    {
+      id = Object.values(id)
+      //alert(id[2]);
+      document.getElementById("accid").value = id[0];
+      document.getElementById("name").value = id[1];
+      document.getElementById("email").value = id[2];
+      document.getElementById("number").value = id[3];
+      document.getElementById("add").style.display = "none";
+      document.getElementById("update").style.display = "block";
     }
 
   </script>

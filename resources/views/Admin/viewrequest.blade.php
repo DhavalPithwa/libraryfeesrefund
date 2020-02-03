@@ -123,12 +123,25 @@
                 </div>
                 <div class="col">
                   <br><br><br>
-                    <button class="btn btn-danger btn-user btn-block" name="btnsubmit"  id="btnsubmit" onClick="elementvisible();">
+                  @if($data->pendingbook == NULL)
+                    <button class="btn btn-danger btn-user btn-block" name="btnsubmit"  id="pedding" onClick="pnddingbook();">
+                      Pending Book 
+                    </button><br>
+                  @else
+                  @if($data->pendingbook == "Request Accepted & Amount Deducted.")
+                    <h3 class="h3 mb-0 text-gray-800"><b>Accepted & Amount Deducted.</b></h3><br> 
+                  @else 
+                    <h3 class="h3 mb-0 text-gray-800"><b>Pending Book</b></h3><br>
+                    <input type="text" class="form-control" style="width: 300px;margin-top: -6px; " name="peddingbook" value="{{$data->pendingbook}}">
+                    <hr>
+                  @endif
+                    <button class="btn btn-danger btn-user btn-block" name="btnsubmit"  id="reject" onClick="elementvisible();">
                       Reject
-                    </button><br><br>
+                    </button><br>
+                  @endif
                     <input type="hidden" name="rejectclick" id="rejectclick" value="0">
                     <h3 class="h3 mb-0 text-gray-800" id="h3reason" style="display: none"><b>Reason</b></h3><br>
-                    <input type="text" class="form-control" name="reject_reason" id="textreason" style="display: none"><br><br>
+                    <input type="text" class="form-control" name="reject_reason" id="textreason" style="display: none"><br>
                     <button class="btn btn-primary btn-user btn-block" name="btnsubmit"  id="btnsubmit"
                     onClick="formsubmit();">
                       Submit

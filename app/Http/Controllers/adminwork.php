@@ -67,6 +67,15 @@ class adminwork extends Controller
             return redirect()->to('/');
         }
     }
+    public function viewstuddetail($id)
+    {
+        if (Auth::user()) {
+            $user = Student::where('enroll', $id)->first();
+            return view('Admin.viewstuddetail', compact('user'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
 
 
     public function report()
@@ -105,7 +114,7 @@ class adminwork extends Controller
     }
 
 
-    public function datechnagerept($month,$year)
+    public function datechnagerept($month, $year)
     {
         // //dd($req->input());
         // $month = $req->input('month');
@@ -179,6 +188,7 @@ class adminwork extends Controller
 
     public function addacc(Request $req)
     {
+
         if (Auth::user()) {
 
             $validatedData = $req->validate([
@@ -187,17 +197,32 @@ class adminwork extends Controller
                 'number' => 'numeric|required|digits:10',
             ]);
 
-            $accountent = new User;
-            $accountent->name = $req->name;
-            $accountent->email = $req->email;
-            $accountent->phone_no = $req->number;
-            $accountent->password = Hash::make($req->number);
-            $accountent->type = 1;
-            $accountent->save();
+            if ($req->input('accid')) {
+                //dd($req->input());
+                $acc = User::where('id', $req->input('accid'))->first();
+                $acc->name = $req->input('name');
+                $acc->email = $req->input('email');
+                $acc->phone_no = $req->input('number');
+                $acc->save();
 
-            $data = User::where('type', 1)->get();
-            toast('Accountant Add Successful.', 'success')->width('20em');
-            return view('Admin.admin_add_acc', compact('data'));
+                $data = User::where('type', 1)->get();
+                toast('Accountant Detail Update Successful.', 'success')->width('20em');
+                return view('Admin.admin_add_acc', compact('data'));
+            } else {
+                $accountent = new User;
+                $accountent->name = $req->name;
+                $accountent->email = $req->email;
+                $accountent->phone_no = $req->number;
+                $accountent->password = Hash::make($req->number);
+                $accountent->type = 1;
+                $accountent->save();
+
+                $data = User::where('type', 1)->get();
+                toast('Accountant Add Successful.', 'success')->width('20em');
+                return view('Admin.admin_add_acc', compact('data'));
+            }
+
+            
         
         } else {
             return redirect()->to('/');
@@ -208,23 +233,40 @@ class adminwork extends Controller
     {
         if (Auth::user()) {
             
-            if ($req->input('rejectclick') == 1) {
+            //dd($req->input());
+            if ($req->input('rejectclick') >= 1) {
                 $validatedData = $req->validate([
                 'reject_reason' => 'required',
                 ]);
             }
             $request = FeeRequest::where('enroll', $req->input('reqenroll'))->first();
             if ($req->input('reject_reason') == null) {
+                if ($req->input('pendingbook') != null) {
+                    $books = explode(',', $req->input('pendingbook'));
+                    foreach ($books as $value) {
+                        $key = explode('-', $value);
+                        $request->amount = $request->amount - (int)$key[1];
+                    }
+                }
+                //dd($request->amount);
                 $request->reason = "Under Payment";
+                $request->pendingbook = "Request Accepted & Amount Deducted.";
                 $request->status = 1;
                 $request->save();
                 Alert::success('Request', 'Request Goes Into Under Payment.');
                 return redirect()->to('/admin');
             } else {
-                $request->reason = $req->input('reject_reason');
-                $request->status = 2;
-                $request->save();
-                Alert::success('Request', 'Request Rejected Success.');
+                if ($req->input('rejectclick') == 1) {
+                    $request->reason = $req->input('reject_reason');
+                    $request->status = 2;
+                    $request->save();
+                    Alert::success('Request', 'Request Rejected Success.');
+                } else {
+                    $request->pendingbook = $req->input('reject_reason');
+                    $request->status = 0;
+                    $request->save();
+                    Alert::success('Pending Book', 'Set Pending Book Detail Success.');
+                }
                 return redirect()->to('/admin');
             }
         } else {
@@ -245,6 +287,39 @@ class adminwork extends Controller
             $data = Student::all();
             toast('Students Add Successful.', 'success')->width('20em');
             return view('Admin.admin_add_stud', compact('data'));
+        
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+    public function addsinglestud(Request $req)
+    {
+        if (Auth::user()) {
+
+            // dd($req->input());
+            $this->validate($req, [
+
+            'enroll' => 'required|numeric',
+            'Name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required|numeric|digits:10',
+            'course' => 'required',
+            'sem' => 'required',
+
+            ]);
+            
+            $stud = new Student;
+            $stud->enroll = $req->input('enroll');
+            $stud->name = $req->input('Name');
+            $stud->email = $req->input('email');
+            $stud->Phone_No = $req->input('phone');
+            $stud->password = Hash::make($req->input('phone'));
+            $stud->course = $req->input('course');
+            $stud->semester = $req->input('sem');
+            $stud->save();
+            toast('Students Add Successful.', 'success')->width('20em');
+            return back();
         
         } else {
             return redirect()->to('/');
@@ -409,6 +484,12 @@ class adminwork extends Controller
         );
         //dd($cmdata);
         return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
+    }
+
+
+    public function updateacc(Request $req)
+    {
+        dd($req->input());
     }
 
 

@@ -9,6 +9,7 @@ use Hash;
 use Auth;
 use Excel;
 use Route;
+use Validator;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Exports\StudentExport;
@@ -127,6 +128,21 @@ class StudentController extends Controller
         
     }
 
+    public function accept($enroll)
+    {
+        //dd($enroll);
+        $data = FeeRequest::where('enroll', $enroll)->first();
+        $books = explode(',', $data->pendingbook);
+        foreach ($books as $value) {
+            $key = explode('-', $value);
+            $data->amount = $data->amount - (int)$key[1];
+        }
+        $data->pendingbook = "Request Accepted & Amount Deducted.";
+        $data->save();
+        Alert::success('Amount Deducted', 'Your Request Accepted Successfully.');
+        return redirect()->to('/student');
+    }
+
     /**
      * Display the specified resource.
      *
@@ -238,5 +254,31 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         //
+    }
+
+    public function updatestud(Request $request)
+    {
+        //dd($req->input());
+        $this->validate($request, [
+
+            'enroll' => 'required|numeric',
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required|numeric|digits:10',
+            'course' => 'required',
+            'sem' => 'required',
+
+        ]);
+        
+        $stud = Student::where('enroll', $request->input('enroll'))->first();
+        $stud->enroll = $request->input('enroll');
+        $stud->name = $request->input('name');
+        $stud->email = $request->input('email');
+        $stud->Phone_No = $request->input('phone');
+        $stud->course = $request->input('course');
+        $stud->semester = $request->input('sem');
+        $stud->save();
+        Alert::success('Update success', 'Students Detail Update Successful.');
+        return redirect()->to('/add_stud');
     }
 }

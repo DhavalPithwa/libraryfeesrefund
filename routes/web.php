@@ -63,8 +63,31 @@ Route::get('/deletedetail/{id}', function ($id) {
     }
 });
 
+Route::get('/deleteaccdetail/{id}', function ($id) {
+    if (Auth::user()) {
+        //dd($id);
+        User::where('id', $id)->delete();
+        Alert::success('Accountant Delete', 'Accountant Deleted Successfilly.');
+        return back();
+    } else {
+        return redirect()->to('/');
+    }
+});
+
+Route::get('/deletestuddetail/{id}', function ($id) {
+    if (Auth::user()) {
+        //dd($id);
+        Student::where('enroll', $id)->delete();
+        Alert::success('Student Delete', 'Student Deleted Successfilly.');
+        return back();
+    } else {
+        return redirect()->to('/');
+    }
+});
+
 Route::get('/admin', 'adminwork@index');
 Route::get('/viewreqdetail/{id}', 'adminwork@extedreq');
+Route::get('/viewstuddetail/{id}', 'adminwork@viewstuddetail');
 
 Route::get('/accountent', function () {
     if (Auth::user()) {
@@ -128,12 +151,16 @@ Route::get('/editreq', function () {
     }
 });
 
+Route::post('/addsinglestud', 'adminwork@addsinglestud');
+Route::post('/updateacc', 'adminwork@updateacc');
+Route::get('/studaccept/{enroll}', 'StudentController@accept');
 Route::get('/admin_report', 'adminwork@report');
-Route::get('/chnagedaterept/{month}/{year}', 'adminwork@datechnagerept')->name('chnagedaterept');;
+Route::get('/chnagedaterept/{month}/{year}', 'adminwork@datechnagerept')->name('chnagedaterept');
 Route::post('/acceptreq', 'FeeRequestController@update');
 Route::post('/acceptreqwd', 'FeeRequestController@updatewd');
 Route::post('/sendreq', 'StudentController@store');
 Route::post('/updatereq', 'StudentController@update');
+Route::post('/updatestud', 'StudentController@updatestud');
 Route::post('/adminlogin', 'adminwork@login');
 Route::post('/addacc', 'adminwork@addacc');
 Route::post('/passorrejectreq', 'adminwork@passorrejectreq');

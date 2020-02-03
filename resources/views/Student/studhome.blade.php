@@ -81,6 +81,35 @@
                     </tr>
                   </tbody>
                 </table>
+
+                @if($data->pendingbook != NULL)
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Pending Book</th>
+                      @if($data->pendingbook != "Request Accepted & Amount Deducted.")
+                      <th style="text-align:center;">React</th>
+                      @endif
+                    </tr>
+                  </thead>  
+                  <tbody>
+                    <tr>
+                      <td>{{$data->pendingbook}}</td>
+                      @if($data->pendingbook != "Request Accepted & Amount Deducted.")
+                      <td style="text-align:center;">
+                        <a onclick="confirmation(event)" href="/studaccept/{{$data['enroll']}}">
+                          <button class="btn btn-primary btn-user" name="btnsubmit"  id="btnsubmit" style="width: 110px; ">
+                              Accept
+                          </button>
+                        </a>
+                      </td>
+                      @endif
+                    </tr>
+                  </tbody>
+                </table>
+                @endif
+
+
                 <table class="table table-bordered" width="100%" cellspacing="0">
                   <thead>
                     <tr>

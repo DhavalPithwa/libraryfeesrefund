@@ -27,6 +27,7 @@ class CreateFeeRequestsTable extends Migration
             $table->string('completedby')->nullable();
             $table->date('paydate')->nullable();
             $table->string('reason')->nullable();
+            $table->string('pendingbook')->nullable();
             $table->string('tran_id')->nullable();
             $table->integer('amount');
             $table->timestamps();

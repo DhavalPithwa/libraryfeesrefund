@@ -219,6 +219,29 @@
                 });
           }
         }
+
+
+        function confirmation(ev) {
+            ev.preventDefault();
+            var urlToRedirect = ev.currentTarget.getAttribute('href'); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            swal({
+              title: "Money Deducte",
+              text: "Money Deducte from your payable amount..Are you Sure ?",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                swal("Money Deducted.", {
+                  icon: "success",
+                });
+                 window.location.replace(urlToRedirect);
+              } else {
+                swal("First Submit This Books.",{icon: "info",});
+              }
+            });
+        }
     
   </script>
 
