@@ -86,35 +86,51 @@
   <script src="js/sb-admin-2.min.js"></script>
 
   <script type="text/javascript">
-    // document.getElementById('timer').innerHTML =  05 + ":" + 00;
-    // startTimer();
+    document.getElementById('timer').innerHTML =  05 + ":" + 00;
+    startTimer();
 
-    // function startTimer() {
-    //   var presentTime = document.getElementById('timer').innerHTML;
-    //   var timeArray = presentTime.split(/[:]+/);
-    //   var m = timeArray[0];
-    //   var s = checkSecond((timeArray[1] - 1));
-    //   if(s==59){m=m-1}
-    //   if (m<0) 
-    //   {
-    //     let url = "{{ url('forgotpass') }}";
-    //     document.location.href=url;
-    //   } else {
-    //     if(m==0 && s <=30)
-    //     {
-    //       document.getElementById('timerdiv').style.color = "red";
-    //     }
-    //     document.getElementById('timer').innerHTML = m + ":" + s;
-    //     setTimeout(startTimer, 1000);
-    //   }
+    function startTimer() {
+      var presentTime = document.getElementById('timer').innerHTML;
+      var timeArray = presentTime.split(/[:]+/);
+      var m = timeArray[0];
+      var s = checkSecond((timeArray[1] - 1));
+      if(s==59){m=m-1}
+      if (m<0) 
+      {
+        let url = "{{ url('forgotpass') }}";
+        document.location.href=url;
+      } else {
+        if(m==0)
+        {
+          document.getElementById('timerdiv').style.color = "red";
+        }
+        if(m==0 && s<=30)
+        {
+          blinkFont();
+        }
+        document.getElementById('timer').innerHTML = m + ":" + s;
+        setTimeout(startTimer, 1000);
+      }
       
-    // }
+    }
 
-    // function checkSecond(sec) {
-    //   if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
-    //   if (sec < 0) {sec = "59"};
-    //   return sec;
-    // }
+    function checkSecond(sec) {
+      if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+      if (sec < 0) {sec = "59"};
+      return sec;
+    }
+
+    function blinkFont()
+    {
+      document.getElementById("timerdiv").style.color="red";
+      setTimeout("setblinkFont()",900)
+    }
+
+    function setblinkFont()
+    {
+      document.getElementById("timerdiv").style.color="white";
+      setTimeout("blinkFont()",900)
+    }
   </script>
 
 </body>
