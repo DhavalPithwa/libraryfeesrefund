@@ -135,10 +135,10 @@
                         <input type="text" class="form-control" style="width: 300px;margin-top: -6px; " name="pendingbook" value="{{$data->pendingbook}}">
                         <hr>
                       @endif
-                      <button class="btn btn-danger btn-user btn-block" name="btnsubmit"  id="reject" onClick="elementvisible();">
+                  @endif
+                  <button class="btn btn-danger btn-user btn-block" name="btnsubmit"  id="reject" onClick="elementvisible();">
                       Reject
                       </button><br>
-                  @endif
                     <input type="hidden" name="rejectclick" id="rejectclick" value="0">
                     <h3 class="h3 mb-0 text-gray-800" id="h3reason" style="display: none"><b>Reason</b></h3><br>
                     <input type="text" class="form-control" name="reject_reason" id="textreason" style="display: none"><br>

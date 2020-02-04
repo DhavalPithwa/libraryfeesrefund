@@ -26,6 +26,7 @@
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{$nvdata->count()}}</div>
                     </div>
                     <div class="col-auto">
+                      <br><br>
                       <i class="fas fa-undo-alt fa-2x text-gray-300"></i>
                     </div>
                   </div>
@@ -42,6 +43,7 @@
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{$updata->count()}}</div>
                     </div>
                     <div class="col-auto">
+                      <br><br>
                       <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
                     </div>
                   </div>
@@ -77,6 +79,7 @@
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{$rjdata->count()}}</div>
                     </div>
                     <div class="col-auto">
+                      <br><br>
                       <i class="fas fa-window-close fa-2x text-gray-300"></i>
                     </div>
                   </div>

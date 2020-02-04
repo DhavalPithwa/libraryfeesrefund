@@ -22,6 +22,13 @@ Route::get('/forgotpass', function () {
     return view('forgotpass');
 });
 
+Route::get('/forgotpasswo', function () {
+    return view('forgotpasswordwithotp', compact('otp', 'email'));
+});
+
+Route::post('/sendotp', 'adminwork@sendotp');
+Route::post('/checkvalue', 'adminwork@checkvalue');
+
 Route::get('/logout', 'adminwork@logout');
 
 

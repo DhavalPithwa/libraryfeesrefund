@@ -16,7 +16,7 @@
             <h1 class="h3 mb-0 text-gray-800"><b>Add Accountant</b></h1>
           </div>
 
-     @if ($errors->any())
+    @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -34,14 +34,14 @@
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="hidden" name="accid" id="accid">
-                    <input type="text" class="form-control form-control-user" name="name" placeholder="Enter Name" id="name">
+                    <input type="text" class="form-control form-control-user" name="name" placeholder="Enter Name" id="name" value="{{ old('name') }}">
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" name="number" placeholder="Mobile Number" id="number">
+                    <input type="text" class="form-control form-control-user" name="number" placeholder="Mobile Number" id="number" value="{{ old('number') }}">
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" name="email" placeholder="Email Address" id="email">
+                  <input type="email" class="form-control form-control-user" name="email" placeholder="Email Address" id="email" value="{{ old('email') }}">
                 </div>
                 <button class="btn btn-primary btn-user btn-block" id="add">
                   Add

@@ -16,6 +16,7 @@ use App\Imports\StudentImport;
 use App\Exports\StudentExport;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use App\Mail\Sendotp;
 
 class adminwork extends Controller
 {
@@ -490,9 +491,65 @@ class adminwork extends Controller
     }
 
 
-    public function updateacc(Request $req)
+    public function sendotp(Request $req)
     {
-        dd($req->input());
+        //dd($req->input());
+        $email = $req->input('email');
+        $user = User::where('email', $req->input('email'))->first();
+        $stud = Student::where('email', $req->input('email'))->first();
+        if ($user or $stud) {
+            //dd($user.$stud);
+            $otp = rand(99999, 999999);
+            $details = [
+            'title' => 'Title: Mail From L.J Library fee Refund System',
+            'body' => 'This is your OTP for forgot Password : '.$otp
+            ];
+
+            \Mail::to($req->input('email'))->send(new Sendotp($details));
+            //dd($otp);
+            return view('forgotpasswo', compact('otp', 'email'));
+            
+        } else {
+            Alert::error('Forgot Password', 'You are not Registered yet');
+            return back()->withInput($req->input());
+        }
+    }
+
+    public function checkvalue(Request $req)
+    {
+        //dd($req->input());
+        $otp = $req->input('otp');
+        $userotp = $req->input('userotp');
+        $email = $req->input('email');
+        $npassword = $req->input('npassword');
+        $ncpassword = $req->input('ncpassword');
+        if ($req->input('otp') != $req->input('userotp')) {
+            Alert::error('OTP', 'Your OTP is not Correct.');
+            return view('forgotpasswo', compact('otp', 'email'));
+        } else {
+            //dd($npassword. $ncpassword);
+            if ($npassword !== $ncpassword) {
+                Alert::error('Password', 'Both Password Must be Same.');
+                return view('forgotpasswo', compact('otp', 'email'));
+            } else {
+                $user = Student::where('email', $email)->first();
+                if ($user) {
+                    //dd("Student");
+                    $user->password = Hash::make($npassword);
+                    $user->save();
+                    Alert::success('Password', 'Password Chnaged.');
+                    return redirect()->to('/');
+                } else {
+                    //dd("Admin");
+                    $user = User::where('email', $email)->first();
+                    $user->password = Hash::make($npassword);
+                    $user->save();
+                    Alert::success('Password', 'Password Chnaged.');
+                    return redirect()->to('/');
+                }
+            }
+        }
+        
     }
 
 

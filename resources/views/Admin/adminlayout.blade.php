@@ -256,6 +256,7 @@
       });
       document.getElementById("rejectclick").value = 1;
       document.getElementById("h3reason").innerHTML = "Reason";
+      document.getElementById("textreason").placeholder = " ";
       document.getElementById("h3reason").style.display = "block";
       document.getElementById("textreason").style.display = "block";
     }

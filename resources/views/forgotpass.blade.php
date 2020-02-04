@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Forgot Password</title>
+  <title>LFRS - Forgot Password</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -21,7 +21,7 @@
 </head>
 
 <body class="bg-gradient-primary">
-
+@include('sweetalert::alert')
   <div class="container">
 
     <!-- Outer Row -->
@@ -38,15 +38,16 @@
                 <div class="p-5">
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
-                    <p class="mb-4">We get it, stuff happens. Just enter your email address below and we'll send you a link to reset your password!</p>
+                    <p class="mb-4">We get it, stuff happens. Just enter your email address below and we'll send you a OTP to reset your password!</p>
                   </div>
-                  <form class="user">
+                  <form class="user" action="{{url('/sendotp')}}" method="post">
+                    @csrf
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" name="email" placeholder="Enter Email Address..."value="{{ old('email') }}">
                     </div>
-                    <a href="login.html" class="btn btn-primary btn-user btn-block">
-                      Reset Password
-                    </a>
+                    <button class="btn btn-primary btn-user btn-block">
+                      Send OTP
+                    </button>
                   </form>
                   <hr>
                   <div class="text-center">
