@@ -259,6 +259,7 @@
       document.getElementById("textreason").placeholder = " ";
       document.getElementById("h3reason").style.display = "block";
       document.getElementById("textreason").style.display = "block";
+      document.getElementById("btnsubmit").style.display = "block";
     }
 
     function pnddingbook()
@@ -343,7 +344,7 @@
             })
             .then((willDelete) => {
               if (willDelete) {
-                swal("Your Form Submited.", {
+                swal("Request Deleted.", {
                   icon: "success",
                 });
                  window.location.replace(urlToRedirect);

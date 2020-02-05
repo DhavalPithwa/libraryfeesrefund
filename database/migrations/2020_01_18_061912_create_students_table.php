@@ -21,6 +21,7 @@ class CreateStudentsTable extends Migration
             $table->string('course');
             $table->string('semester');
             $table->string('password')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

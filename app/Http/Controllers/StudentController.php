@@ -137,9 +137,17 @@ class StudentController extends Controller
             $key = explode('-', $value);
             $data->amount = $data->amount - (int)$key[1];
         }
-        $data->pendingbook = "Request Accepted & Amount Deducted.";
-        $data->save();
-        Alert::success('Amount Deducted', 'Your Request Accepted Successfully.');
+        if ($data->amount < 0) {
+            $data->reason = "Student Need To Pay Us";
+            $data->pendingbook = "Request Accepted & Amount Deducted.";
+            $data->amount = abs($data->amount);
+            $data->save();
+            Alert::error('Request Rejected', "You Need To Pay". abs($data->amount) ."INR To Us.");
+        } else {
+            $data->pendingbook = "Request Accepted & Amount Deducted.";
+            $data->save();
+            Alert::success('Amount Deducted', 'Your Request Accepted Successfully.');
+        }
         return redirect()->to('/student');
     }
 

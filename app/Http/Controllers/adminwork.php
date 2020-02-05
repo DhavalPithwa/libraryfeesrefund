@@ -208,7 +208,7 @@ class adminwork extends Controller
 
                 $data = User::where('type', 1)->get();
                 toast('Accountant Detail Update Successful.', 'success')->width('20em');
-                return view('Admin.admin_add_acc', compact('data'));
+                return redirect()->to('/add_acc');
             } else {
                 $accountent = new User;
                 $accountent->name = $req->name;
@@ -220,7 +220,7 @@ class adminwork extends Controller
 
                 $data = User::where('type', 1)->get();
                 toast('Accountant Add Successful.', 'success')->width('20em');
-                return view('Admin.admin_add_acc', compact('data'));
+                return redirect()->to('/add_acc');
             }
 
             
@@ -252,16 +252,27 @@ class adminwork extends Controller
                         }
                     }
                 }
-                //dd($request->amount);
-                $request->reason = "Under Payment";
-                $request->pendingbook = "Request Accepted & Amount Deducted.";
-                $request->status = 1;
-                $request->save();
-                Alert::success('Request', 'Request Goes Into Under Payment.');
+                if ($request->amount < 0) {
+                    //dd($request->amount);
+                    $request->reason = "Student Need To Pay Us";
+                    $request->pendingbook = "Request Accepted & Amount Deducted.";
+                    $request->status = 2;
+                    $request->amount = abs($request->amount);
+                    $request->save();
+                    Alert::error('Request Rejected', "Student Need To Pay ". abs($request->amount). "INR To Us.");
+                } else {
+                    $request->reason = "Under Payment";
+                    $request->pendingbook = "Request Accepted & Amount Deducted.";
+                    $request->status = 1;
+                    $request->save();
+                    Alert::success('Request', 'Request Goes Into Under Payment.');
+                }
                 return redirect()->to('/admin');
             } else {
                 if ($req->input('rejectclick') == 1) {
-                    $request->reason = $req->input('reject_reason');
+                    if ($request->reason != "Student Need To Pay Us") {
+                        $request->reason = $req->input('reject_reason');
+                    }
                     $request->status = 2;
                     $request->save();
                     Alert::success('Request', 'Request Rejected Success.');

@@ -122,14 +122,14 @@
 
     function blinkFont()
     {
-      document.getElementById("timerdiv").style.color="red";
-      setTimeout("setblinkFont()",900)
+      document.getElementById("timer").style.color="red";
+      setTimeout("setblinkFont()",1200)
     }
 
     function setblinkFont()
     {
-      document.getElementById("timerdiv").style.color="white";
-      setTimeout("blinkFont()",900)
+      document.getElementById("timer").style.color = "white";
+      setTimeout("blinkFont()",1200)
     }
   </script>
 

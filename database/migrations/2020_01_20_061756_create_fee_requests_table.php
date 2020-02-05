@@ -30,6 +30,7 @@ class CreateFeeRequestsTable extends Migration
             $table->string('pendingbook')->nullable();
             $table->string('tran_id')->nullable();
             $table->integer('amount');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

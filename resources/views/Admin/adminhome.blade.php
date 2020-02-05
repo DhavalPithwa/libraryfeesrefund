@@ -134,7 +134,11 @@
                       @else 
                       <td>All Documents Submited</td>
                       @endif
+                      @if($nvd->reason == "Student Need To Pay Us")
+                      <td>Student Penalty : {{$nvd->amount}}</td>
+                      @else
                       <td>{{$nvd->amount}}</td>
+                      @endif
                       <td><a href='{{url("/viewreqdetail/$nvd->enroll")}}'><img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30"></a></td>
                     <td><a onclick="confirmation(event)" href='{{url("/deletedetail/$nvd->enroll")}}'><img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30"></a></td>
                     </tr>
@@ -295,7 +299,11 @@
                       <td>All Documents Submited</td>
                       @endif
                       <td>{{$rjd->reason}}</td>
+                      @if($rjd->reason == "Student Need To Pay Us")
+                      <td>Student Penalty : {{$rjd->amount}}</td>
+                      @else
                       <td>{{$rjd->amount}}</td>
+                      @endif
                     </tr>
                     @endforeach
                   </tbody>

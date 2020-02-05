@@ -24,7 +24,7 @@ return [
     |
     */
 
-    'timer' => env('SWEET_ALERT_TIMER', 5000),
+    'timer' => env('SWEET_ALERT_TIMER', 3000),
 
     /*
     |--------------------------------------------------------------------------
@@ -135,7 +135,7 @@ return [
 
         'toast_close_button' => env('SWEET_ALERT_MIDDLEWARE_TOAST_CLOSE_BUTTON', true),
 
-        'alert_auto_close' => env('SWEET_ALERT_MIDDLEWARE_ALERT_AUTO_CLOSE', 5000),
+        'alert_auto_close' => env('SWEET_ALERT_MIDDLEWARE_ALERT_AUTO_CLOSE', 3000),
 
         'auto_display_error_messages' => env('SWEET_ALERT_AUTO_DISPLAY_ERROR_MESSAGES', false),
     ],

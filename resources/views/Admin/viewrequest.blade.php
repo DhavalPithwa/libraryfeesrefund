@@ -128,9 +128,11 @@
                       Pending Book 
                     </button><br>
                   @else
-                      @if($data->pendingbook == "Request Accepted & Amount Deducted.")
+                      @if($data->reason == "Student Need To Pay Us")
+                        <h3 class="h3 mb-0 text-gray-800"><b>Student Need To Pay Us :- {{$data->amount}} INR</b></h3><br>
+                      @elseif($data->pendingbook == "Request Accepted & Amount Deducted.")
                         <h3 class="h3 mb-0 text-gray-800"><b>Amount Deducted Of Pending Books.</b></h3><br> 
-                      @else 
+                      @else
                         <h3 class="h3 mb-0 text-gray-800"><b>Pending Book</b></h3><br>
                         <input type="text" class="form-control" style="width: 300px;margin-top: -6px; " name="pendingbook" value="{{$data->pendingbook}}">
                         <hr>
@@ -142,10 +144,17 @@
                     <input type="hidden" name="rejectclick" id="rejectclick" value="0">
                     <h3 class="h3 mb-0 text-gray-800" id="h3reason" style="display: none"><b>Reason</b></h3><br>
                     <input type="text" class="form-control" name="reject_reason" id="textreason" style="display: none"><br>
+                    @if($data->reason == "Student Need To Pay Us")
+                    <button class="btn btn-primary btn-user btn-block" name="btnsubmit"  id="btnsubmit"
+                    onClick="formsubmit();" style="display: none;">
+                      Submit
+                    </button>
+                    @else
                     <button class="btn btn-primary btn-user btn-block" name="btnsubmit"  id="btnsubmit"
                     onClick="formsubmit();">
                       Submit
                     </button>
+                    @endif
                 </div>
               </div>
       </div>

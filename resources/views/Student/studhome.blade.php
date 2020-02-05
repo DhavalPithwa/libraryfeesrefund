@@ -57,7 +57,11 @@
                       @elseif ($data['status'] == 3)
                         <td>Complete</td>
                       @endif
-                        <td>{{$data['amount']}}</td>
+                      @if($data['reason'] == "Student Need To Pay Us")
+                      <td>Student Penalty : {{$data['amount']}}</td>
+                      @else
+                      <td>{{$data['amount']}}</td>
+                      @endif
                       @if($data['status'] == 0)
                         <td>
                           <a href="{{url('/editreq')}}" class="btn btn-primary btn-icon-split">
@@ -94,7 +98,11 @@
                   </thead>  
                   <tbody>
                     <tr>
+                      @if($data['reason'] == "Student Need To Pay Us")
+                      <td>{{$data->reason}} :- {{$data['amount']}} INR</td>
+                      @else
                       <td>{{$data->pendingbook}}</td>
+                      @endif
                       @if($data->pendingbook != "Request Accepted & Amount Deducted.")
                       <td style="text-align:center;">
                         <a onclick="confirmation(event)" href="/studaccept/{{$data['enroll']}}">
