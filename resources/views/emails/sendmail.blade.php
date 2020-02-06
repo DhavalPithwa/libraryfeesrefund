@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>{{ $details['title'] }}</h1>
-    <p>{{ $details['body'] }}</p>
+    <h4>{{ $details['body'] }}</h4>
     <p>Thank you</p>
 </body>
 </html>

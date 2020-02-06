@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Exports\StudentExport;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Mail\requeststatus;
 
 class FeeRequestController extends Controller
 {
@@ -106,6 +107,7 @@ class FeeRequestController extends Controller
         //dd($name);
         foreach ($request->input('check') as $data) {
             $req = FeeRequest::where('enroll', $data)->first();
+            $stud = Student::where('enroll', $data)->first();
             $req->status = 3;
             $req->completedby = $name;
             $req->tran_id = $request->input($data);
@@ -113,6 +115,11 @@ class FeeRequestController extends Controller
             $req->paydate = $date;
             $req->save();
             $tidcount = $tidcount + 1;
+            $details = [
+                'title' => 'Title: Mail From L.J Library fee Refund System',
+                'body' => 'Your request is completed. Your Amount is '.$req->amount
+            ];
+            \Mail::to($stud->email)->send(new requeststatus($details));
         }
         Alert::success('Accept Request', 'Request Accept & Transaction Id Saved..');
         return redirect()->to('/accountent');

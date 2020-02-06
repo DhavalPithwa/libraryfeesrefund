@@ -361,7 +361,11 @@
                       <td>All Documents Submited</td>
                       @endif
                       <td>{{$rjd->reason}}</td>
+                      @if($rjd->reason == "Student Need To Pay Us")
+                      <td>Student Penalty : {{$rjd->amount}}</td>
+                      @else
                       <td>{{$rjd->amount}}</td>
+                      @endif
                     </tr>
                     @endforeach
                   </tbody>

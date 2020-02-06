@@ -17,6 +17,8 @@ use App\Exports\StudentExport;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use App\Mail\Sendotp;
+use App\Mail\requeststatus;
+use App\Mail\changepassword;
 
 class adminwork extends Controller
 {
@@ -241,7 +243,9 @@ class adminwork extends Controller
                 ]);
             }
             $request = FeeRequest::where('enroll', $req->input('reqenroll'))->first();
+            $stud = Student::where('enroll', $req->input('reqenroll'))->first();
             if ($req->input('reject_reason') == null and $req->input('rejectclick') < 1) {
+                // Cut Pendding Book Amount
                 if ($req->input('pendingbook') != null) {
                     $books = explode(',', $req->input('pendingbook'));
                     //dd($books);
@@ -254,6 +258,15 @@ class adminwork extends Controller
                 }
                 if ($request->amount < 0) {
                     //dd($request->amount);
+                    //When Amount after Cut pending book money is less then 0
+                    $details = [
+                        
+                        'title' => 'Title: Mail From L.J Library fee Refund System',
+                        'body' => 'After Cut your pending book amount from payable amount. it shows you have to pay ' .abs($request->amount). ' INR to L.J So Your Request Is Rejected. Come & Pay This amount First.'
+
+                    ];
+                    //dd($stud->email);
+                    \Mail::to($stud->email)->send(new requeststatus($details));
                     $request->reason = "Student Need To Pay Us";
                     $request->pendingbook = "Request Accepted & Amount Deducted.";
                     $request->status = 2;
@@ -261,6 +274,11 @@ class adminwork extends Controller
                     $request->save();
                     Alert::error('Request Rejected', "Student Need To Pay ". abs($request->amount). "INR To Us.");
                 } else {
+                    $details = [
+                        'title' => 'Title: Mail From L.J Library fee Refund System',
+                        'body' => 'Your request is Under Payment. Your Amount is '.$request->amount
+                    ];
+                    \Mail::to($stud->email)->send(new requeststatus($details));
                     $request->reason = "Under Payment";
                     $request->pendingbook = "Request Accepted & Amount Deducted.";
                     $request->status = 1;
@@ -270,13 +288,27 @@ class adminwork extends Controller
                 return redirect()->to('/admin');
             } else {
                 if ($req->input('rejectclick') == 1) {
+                    //Reject Request
+        
                     if ($request->reason != "Student Need To Pay Us") {
                         $request->reason = $req->input('reject_reason');
+                    } else {
+                        $details = [
+                            'title' => 'Title: Mail From L.J Library fee Refund System',
+                            'body' => 'Your Request Is Rejected. Because of '. $request->reason
+                        ];
+                        \Mail::to($stud->email)->send(new requeststatus($details));
                     }
                     $request->status = 2;
                     $request->save();
                     Alert::success('Request', 'Request Rejected Success.');
                 } else {
+                    //Set Pending Book Detail Success.
+                    $details = [
+                        'title' => 'Title: Mail From L.J Library fee Refund System',
+                        'body' => 'You have pending books. Like ' .$req->input('reject_reason')
+                    ];
+                    \Mail::to($stud->email)->send(new requeststatus($details));
                     $request->pendingbook = $req->input('reject_reason');
                     $request->status = 0;
                     $request->save();
@@ -365,6 +397,11 @@ class adminwork extends Controller
                 }
                 $user->password = Hash::make($req->npass);
                 $user->save();
+                $details = [
+                    'title' => 'Title: Mail From L.J Library fee Refund System',
+                    'body' => 'We get your password chnage request. it will chnaged in 2 to 3 min.'
+                ];
+                \Mail::to($user->email)->send(new requeststatus($details));
                 $req->session()->flush();
                 Alert::success('Password', 'Password Chnaged.');
                 return redirect()->to('/');
@@ -549,15 +586,19 @@ class adminwork extends Controller
                     $user->password = Hash::make($npassword);
                     $user->save();
                     Alert::success('Password', 'Password Chnaged.');
-                    return redirect()->to('/');
                 } else {
                     //dd("Admin");
                     $user = User::where('email', $email)->first();
                     $user->password = Hash::make($npassword);
                     $user->save();
                     Alert::success('Password', 'Password Chnaged.');
-                    return redirect()->to('/');
                 }
+                $details = [
+                    'title' => 'Title: Mail From L.J Library fee Refund System',
+                    'body' => 'We get your password chnage request. it will chnaged in 2 to 3 min.'
+                ];
+                \Mail::to($user->email)->send(new requeststatus($details));
+                return redirect()->to('/');
             }
         }
         

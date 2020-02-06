@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Exports\StudentExport;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Mail\requeststatus;
 
 class StudentController extends Controller
 {
@@ -122,6 +123,11 @@ class StudentController extends Controller
             $req->amount = $amount;
             $req->status = 0;
             $req->save();
+            $details = [
+                'title' => 'Title: Mail From L.J Library fee Refund System',
+                'body' => 'We get your request from library fee refund. As soon as possible we will work on it and send you status of your request'
+            ];
+            \Mail::to($user['email'])->send(new requeststatus($details));
             Alert::success('Request', 'Your Request Send Successfully.');
             return redirect()->to('/student');
         }
@@ -132,6 +138,7 @@ class StudentController extends Controller
     {
         //dd($enroll);
         $data = FeeRequest::where('enroll', $enroll)->first();
+        $stud = Student::where('enroll', $enroll)->first();
         $books = explode(',', $data->pendingbook);
         foreach ($books as $value) {
             $key = explode('-', $value);
@@ -141,9 +148,20 @@ class StudentController extends Controller
             $data->reason = "Student Need To Pay Us";
             $data->pendingbook = "Request Accepted & Amount Deducted.";
             $data->amount = abs($data->amount);
+            $data->status = 2;
             $data->save();
+            $details = [
+                'title' => 'Title: Mail From L.J Library fee Refund System',
+                'body' => 'Your Request Is Rejected. Because of Student Need To Pay Us.'
+            ];
+            \Mail::to($stud->email)->send(new requeststatus($details));
             Alert::error('Request Rejected', "You Need To Pay". abs($data->amount) ."INR To Us.");
         } else {
+            $details = [
+                'title' => 'Title: Mail From L.J Library fee Refund System',
+                'body' => 'You accept that money Deduct from your amount. Now your amount = '. abs($data->amount)
+            ];
+            \Mail::to($stud->email)->send(new requeststatus($details));
             $data->pendingbook = "Request Accepted & Amount Deducted.";
             $data->save();
             Alert::success('Amount Deducted', 'Your Request Accepted Successfully.');
@@ -246,6 +264,11 @@ class StudentController extends Controller
         $updatedata->lfees_no = $request->input('lfeeno');
         $updatedata->amount = $amount;
         $updatedata->save();
+        $details = [
+            'title' => 'Title: Mail From L.J Library fee Refund System',
+            'body' => 'Your Request Is Updated.'
+        ];
+        \Mail::to($user['email'])->send(new requeststatus($details));
         Alert::success('Update Request', 'Your Request Updated Successfully.');
         return redirect()->to('/student');
 
