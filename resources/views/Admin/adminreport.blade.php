@@ -188,7 +188,7 @@
           </div>
 
 
-        <div class="card shadow mb-4" id="cmtable" style="display: block;">
+        <div class="card shadow mb-4" id="cmtable" style="display: none;">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Completed Requests</h6>
             </div>
@@ -255,7 +255,7 @@
           </div>
 
 
-          <div class="card shadow mb-4" id="uptable" style="display: block;">
+          <div class="card shadow mb-4" id="uptable" style="display: none;">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Under Payment Requests</h6>
             </div>
@@ -311,7 +311,7 @@
             </div>
           </div>
 
-          <div class="card shadow mb-4" id="rjtable" style="display: block;">
+          <div class="card shadow mb-4" id="rjtable" style="display: none;">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Rejected Requests</h6>
             </div>
@@ -382,6 +382,15 @@
 
               
       </div>
+      <script type="text/javascript">
+        var start = new Date().getFullYear();;
+        var end = 2015;
+        var options = "";
+        for(var year = start ; year >= end; year--){
+          options += "<option>"+ year +"</option>";
+        }
+        document.getElementById("year").innerHTML = options;
+      </script>
       <!-- End of Main Content -->
 @endsection
       

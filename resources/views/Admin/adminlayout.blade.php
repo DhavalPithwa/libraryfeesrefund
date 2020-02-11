@@ -21,12 +21,11 @@
 
   <!-- Custom styles for this page -->
   <link href="{{url('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-  <script src="{{url('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js')}}"></script>
+  <script src="{{url('https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js')}}"></script>
   <script src="{{url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')}}"></script>
   <script src="{{url('https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')}}"></script>
   <link rel="stylesheet" href="{{url('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css')}}">
-  <script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js')}}"></script>
-  <script src="{{url('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
+  
 
 </head>
 
@@ -192,13 +191,6 @@
   <script src="{{url('js/sb-admin-2.min.js')}}"></script>
 
   <!-- Page level plugins -->
-  <script src="{{url('vendor/chart.js/Chart.min.js')}}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{{url('js/demo/chart-area-demo.js')}}"></script>
-  <script src="{{url('js/demo/chart-pie-demo.js')}}"></script>
-
-  <!-- Page level plugins -->
   <script src="{{url('vendor/datatables/jquery.dataTables.min.js')}}"></script>
   <script src="{{url('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
@@ -214,37 +206,13 @@
   </script>
   <script type="text/javascript">
     
-    $(document).ready(function () {
-      $('#dtHorizontalVerticalExample').DataTable({
-      "scrollX": true,
-      "scrollY": 465,
-      });
-      $('.dataTables_length').addClass('bs-select');
-    });
-
-    $(document).ready(function () {
-      $('#cmdtHorizontalVerticalExample').DataTable({
-      "scrollX": true,
-      "scrollY": 465,
-      });
-      $('.dataTables_length').addClass('bs-select');
-    });
-
-    $(document).ready(function () {
-      $('#updtHorizontalVerticalExample').DataTable({
-      "scrollX": true,
-      "scrollY": 465,
-      });
-      $('.dataTables_length').addClass('bs-select');
-    });
-
-    $(document).ready(function () {
-      $('#rjdtHorizontalVerticalExample').DataTable({
-      "scrollX": true,
-      "scrollY": 465,
-      });
-      $('.dataTables_length').addClass('bs-select');
-    });
+    $(document).ready(function() {
+        $('#dtHorizontalVerticalExample').DataTable();
+        $('#cmdtHorizontalVerticalExample').DataTable();
+        $('#updtHorizontalVerticalExample').DataTable();
+        $('#rjdtHorizontalVerticalExample').DataTable();
+    } );
+    
   </script>
 
   <script type="text/javascript">
@@ -289,7 +257,7 @@
         $("#cmtable").hide("slow");
         $("#rjtable").hide("slow");
         $("#uptable").hide("slow");
-        $("#nvtable").show(2000);
+        $("#nvtable").show(900);
       }
 
       function showcmtable() 
@@ -297,7 +265,7 @@
         $("#nvtable").hide("slow");
         $("#rjtable").hide("slow");
         $("#uptable").hide("slow");
-        $("#cmtable").show(2000);
+        $("#cmtable").show(900);
       }
 
       function showuptable() 
@@ -305,7 +273,7 @@
         $("#cmtable").hide("slow");
         $("#rjtable").hide("slow");
         $("#nvtable").hide("slow");
-        $("#uptable").show(2000);
+        $("#uptable").show(900);
       }
 
       function showrjtable() 
@@ -313,7 +281,7 @@
         $("#cmtable").hide("slow");
         $("#nvtable").hide("slow");
         $("#uptable").hide("slow");
-        $("#rjtable").show(2000);
+        $("#rjtable").show(900);
       }
 
       function showform() 
@@ -363,13 +331,7 @@
       form.submit();
     }
 
-    var start = new Date().getFullYear();;
-    var end = 2015;
-    var options = "";
-    for(var year = start ; year >= end; year--){
-      options += "<option>"+ year +"</option>";
-    }
-    document.getElementById("year").innerHTML = options;
+    
 
     function f1(objButton){  
         var year = document.getElementById('year');
@@ -441,6 +403,9 @@
     }
 
   </script>
+
+  <script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js')}}"></script>
+  <script src="{{url('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
 
 </body>
 

@@ -142,7 +142,9 @@ class StudentController extends Controller
         $books = explode(',', $data->pendingbook);
         foreach ($books as $value) {
             $key = explode('-', $value);
-            $data->amount = $data->amount - (int)$key[1];
+            if (count($key) >= 2) {
+                $data->amount = $data->amount - (int)$key[1];
+            }
         }
         if ($data->amount < 0) {
             $data->reason = "Student Need To Pay Us";

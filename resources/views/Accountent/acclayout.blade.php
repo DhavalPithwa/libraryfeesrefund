@@ -25,11 +25,6 @@
   <script src="{{url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')}}"></script>
   <script src="{{url('https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')}}"></script>
   <link rel="stylesheet" href="{{('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css')}}">
-  <script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js')}}"></script>
-  <script src="{{url('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
-
-  <script src="{{url('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
-  <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
   <script src="{{url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js')}}"></script>
   <script src="{{url('//code.jquery.com/jquery-1.11.1.min.js')}}"></script>
 
@@ -237,13 +232,6 @@
   <script src="{{url('js/sb-admin-2.min.js')}}"></script>
 
   <!-- Page level plugins -->
-  <script src="{{url('vendor/chart.js/Chart.min.js')}}"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{{url('js/demo/chart-area-demo.js')}}"></script>
-  <script src="{{url('js/demo/chart-pie-demo.js')}}"></script>
-
-  <!-- Page level plugins -->
   <script src="{{url('vendor/datatables/jquery.dataTables.min.js')}}"></script>
   <script src="{{url('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
@@ -295,6 +283,12 @@
     });
 
   </script>
+
+  
+  <script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js')}}"></script>
+  <script src="{{url('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
+
+  <script src="{{url('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
 
 </body>
 
