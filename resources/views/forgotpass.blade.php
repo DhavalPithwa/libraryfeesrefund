@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body style="background-image: url(img/loginpage.webp);">
 @include('sweetalert::alert')
   <div class="container">
 
@@ -33,7 +33,8 @@
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
-              <img src="{{URL::asset('img/login.jpg')}}" width="460" height="485">
+              <img src="{{URL::asset('img/ljlogo.png')}}" width="430" height="375" 
+              style="margin-top: 10px; margin-left: 40px; margin-right: -10px;" >
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
