@@ -14,14 +14,30 @@ class StudentImport implements ToModel
     */
     public function model(array $row)
     {
-        return new Student([
-            'enroll'     => $row[0],
-            'name'     => $row[1],
-            'email'     => $row[2],
-            'Phone_No'     => $row[3],
-            'course'     => $row[4],
-            'semester'     => $row[5],
-            'password'     => \Hash::make($row[3]),
-        ]);
+        $dlstud = Student::withTrashed()->where('enroll',$row[0])->first(); 
+        if($dlstud) {
+            $dlstud->forceDelete();
+        }
+        $stud = Student::find($row[0]);
+        if ($stud) {
+            $stud->name = $row[1];
+            $stud->email = $row[2];
+            $stud->Phone_No = $row[3];
+            $stud->password = \Hash::make($row[3]);
+            $stud->course = $row[4];
+            $stud->semester = $row[5];
+            $stud->update();
+            return $stud;
+        } else {
+            return new Student([
+                'enroll'     => $row[0],
+                'name'     => $row[1],
+                'email'     => $row[2],
+                'Phone_No'     => $row[3],
+                'course'     => $row[4],
+                'semester'     => $row[5],
+                'password'     => \Hash::make($row[3]),
+            ]);
+        }
     }
 }
