@@ -119,10 +119,6 @@ class adminwork extends Controller
 
     public function datechnagerept($month, $year)
     {
-        // //dd($req->input());
-        // $month = $req->input('month');
-        // $year = $req->input('year');
-        //dd($year);
         if (Auth::user()) {
             $nvdata = FeeRequest::where('status', 0)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
             $updata = FeeRequest::where('status', 1)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
@@ -166,9 +162,15 @@ class adminwork extends Controller
                 if ($user['type'] == 0) {
                     toast('Login As Admin', 'success')->width('20em');
                     return redirect()->to('/admin');
-                } else {
+                } elseif($user['type'] == 1) {
                     toast('Login As Accountant', 'success')->width('20em');
                     return redirect()->to('/accountent');
+                } elseif($user['type'] == 2) {
+                    toast('Login As Librarian', 'success')->width('20em');
+                    return redirect()->to('/librarian');
+                } else {
+                    toast('Login As Faculty', 'success')->width('20em');
+                    return redirect()->to('/faculty');
                 }
             } else {
                 toast('Check Credentials', 'error')->width('20em');
@@ -191,42 +193,54 @@ class adminwork extends Controller
 
     public function addacc(Request $req)
     {
-
+        $type = 'Select Role';
         if (Auth::user()) {
 
             $validatedData = $req->validate([
                 'name' => 'required|max:255',
                 'email' => 'required|email',
                 'number' => 'numeric|required|digits:10',
+                'role' =>   'required|not_in:'.$type,
             ]);
 
-            if ($req->input('accid')) {
-                //dd($req->input());
-                $acc = User::where('id', $req->input('accid'))->first();
-                $acc->name = $req->input('name');
-                $acc->email = $req->input('email');
-                $acc->phone_no = $req->input('number');
-                $acc->save();
+            if ($req->input('userid')) {
+
+                $user = User::where('id', $req->input('userid'))->first();
+                $user->name = $req->input('name');
+                $user->email = $req->input('email');
+                $user->phone_no = $req->input('number');
+                if ($req->role == "Accountant") {
+                    $user->type = 1;
+                } elseif ($req->role == "Librarian") {
+                    $user->type = 2;
+                } elseif ($req->role == "Faculty") {
+                    $user->type = 3;
+                }
+                $user->save();
 
                 $data = User::where('type', 1)->get();
                 toast('Accountant Detail Update Successful.', 'success')->width('20em');
-                return redirect()->to('/add_acc');
+                return redirect()->to('/add_user');
             } else {
-                $accountent = new User;
-                $accountent->name = $req->name;
-                $accountent->email = $req->email;
-                $accountent->phone_no = $req->number;
-                $accountent->password = Hash::make($req->number);
-                $accountent->type = 1;
-                $accountent->save();
-
+                
+                $user = new User;
+                $user->name = $req->name;
+                $user->email = $req->email;
+                $user->phone_no = $req->number;
+                $user->password = Hash::make($req->number);
+                if ($req->role == "Accountant") {
+                    $user->type = 1;
+                } elseif ($req->role == "Librarian") {
+                    $user->type = 2;
+                } elseif ($req->role == "Faculty") {
+                    $user->type = 3;
+                }
+                $user->save();
                 $data = User::where('type', 1)->get();
                 toast('Accountant Add Successful.', 'success')->width('20em');
-                return redirect()->to('/add_acc');
+                return redirect()->to('/add_user');
             }
 
-            
-        
         } else {
             return redirect()->to('/');
         }
@@ -259,30 +273,35 @@ class adminwork extends Controller
                 if ($request->amount < 0) {
                     //dd($request->amount);
                     //When Amount after Cut pending book money is less then 0
+                    
+                    $request->reason = "Student Need To Pay Us";
+                    $request->pendingbook = "Request Accepted & Amount Deducted.";
+                    $request->status = 2;
+                    $request->amount = abs($request->amount);
+                    $request->save();
+
                     $details = [
                         
                         'title' => 'Title: Mail From L.J Library fee Refund System',
                         'body' => 'After Cut your pending book amount from payable amount. it shows you have to pay ' .abs($request->amount). ' INR to L.J So Your Request Is Rejected. Come & Pay This amount First.'
 
                     ];
-                    //dd($stud->email);
                     \Mail::to($stud->email)->send(new requeststatus($details));
-                    $request->reason = "Student Need To Pay Us";
-                    $request->pendingbook = "Request Accepted & Amount Deducted.";
-                    $request->status = 2;
-                    $request->amount = abs($request->amount);
-                    $request->save();
+
                     Alert::error('Request Rejected', "Student Need To Pay ". abs($request->amount). "INR To Us.");
                 } else {
+                    
+                    $request->reason = "Under Payment";
+                    $request->pendingbook = "Request Accepted & Amount Deducted.";
+                    $request->status = 1;
+                    $request->save();
+
                     $details = [
                         'title' => 'Title: Mail From L.J Library fee Refund System',
                         'body' => 'Your request is Under Payment. Your Amount is '.$request->amount
                     ];
                     \Mail::to($stud->email)->send(new requeststatus($details));
-                    $request->reason = "Under Payment";
-                    $request->pendingbook = "Request Accepted & Amount Deducted.";
-                    $request->status = 1;
-                    $request->save();
+                    
                     Alert::success('Request', 'Request Goes Into Under Payment.');
                 }
                 return redirect()->to('/admin');
@@ -306,7 +325,7 @@ class adminwork extends Controller
                     //Set Pending Book Detail Success.
                     $details = [
                         'title' => 'Title: Mail From L.J Library fee Refund System',
-                        'body' => 'You have pending books. Like ' .$req->input('reject_reason')
+                        'body' => 'You have pending books. AS ' .$req->input('reject_reason')
                     ];
                     \Mail::to($stud->email)->send(new requeststatus($details));
                     $request->pendingbook = $req->input('reject_reason');

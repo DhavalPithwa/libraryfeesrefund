@@ -1,6 +1,6 @@
-@extends('Admin.adminlayout')
+@extends('Librarian.liblayout')
 
-@section('title','Admin - Report')
+@section('title','Librarian - Home')
 
 
 @section('content')
@@ -10,51 +10,9 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"><b>Statistical Data</b></h1>
+            <h1 class="h3 mb-0 text-gray-800"><b>Home</b></h1>
           </div>
-          <!-- <form action="{{url('/chnagedaterept')}}" method="post" id="form"> -->
-              @csrf
-              <div class="row">
-                  <div class="col-xl-12 col-lg-8">
-                      <div class="">
-                            <div class="form-row" style="padding: 10px;">
-          <div class="col">
-              <h3 class="h3 mb-0 text-gray-800"><b>Selected Month</b></h3><br>
-              <h4 class="h5 mb-0 text-gray-800"><label>{{$month}}</label></h3>
-          </div>
-          <div class="col">
-              <h3 class="h3 mb-0 text-gray-800"><b>Selected Year</b></h3><br>
-              <h4 class="h5 mb-0 text-gray-800"><label>{{$year}}</label></h3>
-          </div>
-          <div class="col">
-              <select class="form-control" id="year" name="year" style="font-size: 20px; width: 245px; font-weight: bolder;">
-              </select>
-          </div>
-          <div class="col">
-              <select class="form-control" id="year" name="year" style="font-size: 20px; width: 245px; font-weight: bolder;" onchange="f1(this)">
-                <option  value="">Select Month</option>
-                <option  value="01">January</option>
-                <option  value="02">February</option>
-                <option  value="03">March</option>
-                <option  value="04">April</option>
-                <option  value="05">May</option>
-                <option  value="06">June</option>
-                <option  value="07">July</option>
-                <option  value="08">August</option>
-                <option  value="09">September</option>
-                <option  value="10">Octomber</option>
-                <option  value="11">November</option>
-                <option  value="12">December</option>
-              </select>
-         </div>
-    
-                    </div>
-                  </div>
-              </div>
-            </div>
-              <input type="hidden" name="month" id="month"> 
-          <!-- </form> -->
-          <hr>
+
           <!-- Content Row -->
           <div class="row">
 
@@ -70,6 +28,23 @@
                     <div class="col-auto">
                       <br><br>
                       <i class="fas fa-undo-alt fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body" id="underpay" style="cursor: pointer;" onclick="showuptable();">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1"><h4>Under payment Requests</h4></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{$updata->count()}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <br><br>
+                      <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -93,22 +68,7 @@
               </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body" id="underpay" style="cursor: pointer;" onclick="showuptable();">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1"><h4>Under payment Requests</h4></div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{$updata->count()}}</div>
-                    </div>
-                    <div class="col-auto">
-                      <br><br>
-                      <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>   
+               
             <!-- Pending Requests Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-danger shadow h-100 py-2">
@@ -136,14 +96,6 @@
               <h6 class="m-0 font-weight-bold text-primary">Not Varifiled Requests</h6>
             </div>
             <div class="card-body">
-      @if($nvdata->count() > 0)
-      <a href='{{url("/nvexport/$month/$year")}}' class="btn btn-secondary btn-icon-split" style="float: right;">
-        <span class="icon text-white-50">
-          <i class="fas fa-download"></i>
-        </span>
-        <span class="text">Export</span>
-      </a>
-      @endif
               <div class="">
                 <table class="table table-bordered" id="dtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead style="widows: 100%;">
@@ -154,6 +106,8 @@
                       <th>Library Fee Number</th>
                       <th>Documents</th>
                       <th>Amount</th>
+                      <th>View</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -164,6 +118,8 @@
                       <th>Library Fee Number</th>
                       <th>Documents</th>
                       <th>Amount</th>
+                      <th>View</th>
+                      <th>Delete</th>
                     </tr>
                   </tfoot>
                   <tbody>
@@ -178,7 +134,13 @@
                       @else 
                       <td>All Documents Submited</td>
                       @endif
+                      @if($nvd->reason == "Student Need To Pay Us")
+                      <td>Student Penalty : {{$nvd->amount}}</td>
+                      @else
                       <td>{{$nvd->amount}}</td>
+                      @endif
+                      <td><a href='{{url("/viewreqdetail/$nvd->enroll")}}'><img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30"></a></td>
+                    <td><a onclick="confirmation(event)" href='{{url("/deletedetail/$nvd->enroll")}}'><img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30"></a></td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -193,14 +155,6 @@
               <h6 class="m-0 font-weight-bold text-primary">Completed Requests</h6>
             </div>
             <div class="card-body">
-      @if($cmdata->count() > 0)
-      <a href='{{url("/cmexport/$month/$year")}}' class="btn btn-secondary btn-icon-split" style="float: right;">
-        <span class="icon text-white-50">
-          <i class="fas fa-download"></i>
-        </span>
-        <span class="text">Export</span>
-      </a>
-      @endif
               <div class="">
                 <table class="table table-bordered" id="cmdtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
@@ -260,14 +214,6 @@
               <h6 class="m-0 font-weight-bold text-primary">Under Payment Requests</h6>
             </div>
             <div class="card-body">
-      @if($updata->count() > 0)
-      <a href='{{url("/upexport/$month/$year")}}' class="btn btn-secondary btn-icon-split" style="float: right;">
-        <span class="icon text-white-50">
-          <i class="fas fa-download"></i>
-        </span>
-        <span class="text">Export</span>
-      </a>
-      @endif
               <div class="">
                 <table class="table table-bordered" id="updtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
@@ -316,14 +262,6 @@
               <h6 class="m-0 font-weight-bold text-primary">Rejected Requests</h6>
             </div>
             <div class="card-body">
-      @if($rjdata->count() > 0)
-      <a href='{{url("/rjexport/$month/$year")}}' class="btn btn-secondary btn-icon-split" style="float: right;">
-        <span class="icon text-white-50">
-          <i class="fas fa-download"></i>
-        </span>
-        <span class="text">Export</span>
-      </a>
-      @endif
               <div class="">
                 <table class="table table-bordered" id="rjdtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
@@ -382,15 +320,6 @@
 
               
       </div>
-      <script type="text/javascript">
-        var start = new Date().getFullYear();;
-        var end = 2015;
-        var options = "";
-        for(var year = start ; year >= end; year--){
-          options += "<option>"+ year +"</option>";
-        }
-        document.getElementById("year").innerHTML = options;
-      </script>
       <!-- End of Main Content -->
 @endsection
       

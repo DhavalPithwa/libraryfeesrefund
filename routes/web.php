@@ -35,15 +35,25 @@ Route::get('/logout', 'adminwork@logout');
 Route::get('/profile', function () {
     if (Auth::user()) {
         $user = Auth::user();
-        return view('Admin.admin_profile', compact('user'));
+        //dd($user->type);
+        if ($user->type == 0) {
+            return view('Admin.admin_profile', compact('user'));    
+        } elseif ($user->type == 1) {
+            return view('Accountent.acc_profile', compact('user'));    
+        } elseif ($user->type == 2) {
+            return view('Librarian.lib_profile', compact('user'));    
+        } else {
+            return view('Faculty.fac_profile', compact('user'));    
+        }
+        
     } else {
         return redirect()->to('/');
     }
 });
 
-Route::get('/add_acc', function () {
+Route::get('/add_user', function () {
     if (Auth::user()) {
-        $data = User::where('type', 1)->get();
+        $data = User::wherein('type', [1,2,3])->get();
         return view('Admin.admin_add_acc', compact('data'));
     } else {
         return redirect()->to('/');
@@ -70,7 +80,7 @@ Route::get('/deletedetail/{id}', function ($id) {
     }
 });
 
-Route::get('/deleteaccdetail/{id}', function ($id) {
+Route::get('/deleteuserdetail/{id}', function ($id) {
     if (Auth::user()) {
         //dd($id);
         User::where('id', $id)->delete();
@@ -109,15 +119,7 @@ Route::get('/accountent', function () {
         return redirect()->to('/');
     }
 });
-
-Route::get('/acc_profile', function () {
-    if (Auth::user()) {
-        $user = Auth::user();
-        return view('Accountent.acc_profile', compact('user'));
-    } else {
-        return redirect()->to('/');
-    }
-});
+Route::get('/librarian', 'librarianwork@index');
 
 Route::get('/student', function () {
     if (Auth::guard('student')->user()) {

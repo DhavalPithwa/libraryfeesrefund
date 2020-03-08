@@ -1,6 +1,6 @@
 @extends('Admin.adminlayout')
 
-@section('title','Admin - Add Accountant')
+@section('title','Admin - Add Authorities')
 
 
 @section('content')
@@ -13,7 +13,7 @@
 
     <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"><b>Add Accountant</b></h1>
+            <h1 class="h3 mb-0 text-gray-800"><b>Add Authorities</b></h1>
           </div>
 
     @if ($errors->any())
@@ -33,15 +33,25 @@
           <div class="col-lg-7">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="hidden" name="accid" id="accid">
+                    <input type="hidden" name="userid" id="accid">
                     <input type="text" class="form-control form-control-user" name="name" placeholder="Enter Name" id="name" value="{{ old('name') }}">
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" name="number" placeholder="Mobile Number" id="number" value="{{ old('number') }}">
                   </div>
                 </div>
-                <div class="form-group">
-                  <input type="email" class="form-control form-control-user" name="email" placeholder="Email Address" id="email" value="{{ old('email') }}">
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <input type="email" class="form-control form-control-user" name="email" placeholder="Email Address" id="email" value="{{ old('email') }}">
+                  </div>
+                  <div class="col-sm-6">
+                    <select class="form-control" id="userdropdown" name="role">
+                      <option>Select Role</option>
+                      <option>Accountant</option>
+                      <option>Librarian</option>
+                      <option>Faculty</option>
+                    </select>
+                  </div>
                 </div>
                 <button class="btn btn-primary btn-user btn-block" id="add">
                   Add
@@ -67,6 +77,7 @@
                       <th>ID</th>
                       <th>Name</th>
                       <th>Email</th>
+                      <th>Role</th>
                       <th>Mobile No</th>
                       <th>View</th>
                       <th>Delete</th>
@@ -77,6 +88,7 @@
                       <th>ID</th>
                       <th>Name</th>
                       <th>Email</th>
+                      <th>Role</th>
                       <th>Mobile No</th>
                       <th>View</th>
                       <th>Delete</th>
@@ -88,9 +100,16 @@
                       <td>{{$d->id}}</td>
                       <td>{{$d->name}}</td>
                       <td>{{$d->email}}</td>
+                      @if($d->type == 1)
+                      <td>Accountant</td>
+                      @elseif($d->type == 2)
+                      <td>Librarian</td>
+                      @else
+                      <td>Faculty</td>
+                      @endif
                       <td>{{$d->phone_no}}</td>
                       <td>
-                        <img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30" onclick="editacc({{$d}})">
+                        <img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30" onclick="edituser({{$d}})">
                       </td>
                       <td>
                         <a onclick="confirmation(event)" href='{{url("/deleteaccdetail/$d->id")}}'><img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30"></a>

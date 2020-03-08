@@ -61,26 +61,6 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/add_stud')}}">
-          <i class="fas fa-user-plus"></i>
-          <span>Add Students</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{{url('/add_user')}}">
-          <i class="fas fa-user-plus"></i>
-          <span>Add Authorities</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
         <a class="nav-link" href="{{url('/admin_report')}}">
           <i class="fas fa-search-plus"></i>
           <span>Statistical Data</span></a>
