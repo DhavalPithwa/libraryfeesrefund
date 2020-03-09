@@ -24,6 +24,7 @@
   <script src="{{url('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js')}}"></script>
   <script src="{{url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')}}"></script>
   <script src="{{url('https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')}}"></script>
+  <script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.js')}}"></script>
   <link rel="stylesheet" href="{{url('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css')}}">
   
 </head>
@@ -38,7 +39,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="\admin">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="\student">
         <div class="sidebar-brand-icon" style="margin-top: 11px;">
           <h4 style="font-weight: bolder;">LJMCA</h4>
         </div>
@@ -63,7 +64,16 @@
       <li class="nav-item active">
         <a class="nav-link" href="{{url('/request')}}">
          <i class="fas fa-paper-plane"></i>
-          <span>Send Request</span></a>
+          <span>Fees Refund Request</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{url('/docrequest')}}">
+        <i class="fas fa-file"></i>
+          <span>Document Request</span></a>
       </li>
 
       <!-- Divider -->
@@ -117,7 +127,8 @@
     <!-- End of Topbar -->
 
     @yield('content')
-
+</div>
+</div>
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">

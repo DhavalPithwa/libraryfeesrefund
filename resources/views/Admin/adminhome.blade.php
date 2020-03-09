@@ -96,7 +96,7 @@
               <h6 class="m-0 font-weight-bold text-primary">Not Varifiled Requests</h6>
             </div>
             <div class="card-body">
-              <div class="">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="dtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead style="widows: 100%;">
                     <tr>
@@ -106,8 +106,6 @@
                       <th>Library Fee Number</th>
                       <th>Documents</th>
                       <th>Amount</th>
-                      <th>View</th>
-                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -118,9 +116,7 @@
                       <th>Library Fee Number</th>
                       <th>Documents</th>
                       <th>Amount</th>
-                      <th>View</th>
-                      <th>Delete</th>
-                    </tr>
+                      </tr>
                   </tfoot>
                   <tbody>
                     @foreach ($nvdata as $nvd)
@@ -139,9 +135,6 @@
                       @else
                       <td>{{$nvd->amount}}</td>
                       @endif
-                      <td><a href='{{url("/viewreqdetail/$nvd->enroll")}}'><img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30"></a></td>
-                    <td><a onclick="confirmation(event)" href='{{url("/deletedetail/$nvd->enroll")}}'><img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30"></a></td>
-                    </tr>
                     @endforeach
                   </tbody>
                 </table>
@@ -155,7 +148,7 @@
               <h6 class="m-0 font-weight-bold text-primary">Completed Requests</h6>
             </div>
             <div class="card-body">
-              <div class="">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="cmdtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
                     <tr>
@@ -214,7 +207,7 @@
               <h6 class="m-0 font-weight-bold text-primary">Under Payment Requests</h6>
             </div>
             <div class="card-body">
-              <div class="">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="updtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
                     <tr>
@@ -262,7 +255,7 @@
               <h6 class="m-0 font-weight-bold text-primary">Rejected Requests</h6>
             </div>
             <div class="card-body">
-              <div class="">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="rjdtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
                     <tr>

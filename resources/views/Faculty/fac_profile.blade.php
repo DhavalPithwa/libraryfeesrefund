@@ -1,6 +1,6 @@
-@extends('Accountent.acclayout')
+@extends('Faculty.faclayout')
 
-@section('title','Accountent - Profile')
+@section('title','Faculty - Profile')
 
 
 @section('content')

@@ -25,7 +25,7 @@ class adminwork extends Controller
     
     public function index()
     {
-        if (Auth::user()) {
+        if (Auth::user()->type == 0 or Auth::user()->type == 2) {
 
             $nvdata = FeeRequest::where('status', 0)->get();
             $updata = FeeRequest::where('status', 1)->get();
@@ -59,33 +59,11 @@ class adminwork extends Controller
         }
     }
 
-
-    public function extedreq($id)
-    {
-        if (Auth::user()) {
-            $data = FeeRequest::where('enroll', $id)->first();
-            $user = Student::where('enroll', $id)->first();
-            return view('Admin.viewrequest', compact('user', 'data'));
-        } else {
-            return redirect()->to('/');
-        }
-    }
-    public function viewstuddetail($id)
-    {
-        if (Auth::user()) {
-            $user = Student::where('enroll', $id)->first();
-            return view('Admin.viewstuddetail', compact('user'));
-        } else {
-            return redirect()->to('/');
-        }
-    }
-
-
     public function report()
     {
         $month = Carbon::now()->month;
         $year = Carbon::now()->year;
-        if (Auth::user()) {
+        if (Auth::user()->type == 0 or Auth::user()->type == 2) {
             $nvdata = FeeRequest::where('status', 0)->whereYear('created_at', '=', $year)->whereMonth('created_at', $month)->get();
             $updata = FeeRequest::where('status', 1)->whereYear('created_at', '=', $year)->whereMonth('created_at', $month)->get();
             $rjdata = FeeRequest::where('status', 2)->whereYear('created_at', '=', $year)->whereMonth('created_at', $month)->get();
@@ -110,7 +88,12 @@ class adminwork extends Controller
                 //dd($name->name);
                 $cmd->name = $name->name;
             }
-            return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata', 'month', 'year'));
+            if (Auth::user()->type == 0) {
+                return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata', 'month', 'year'));    
+            } else {
+                return view('Librarian.libreport', compact('nvdata', 'updata', 'rjdata', 'cmdata', 'month', 'year'));
+            }
+            
         } else {
             return redirect()->to('/');
         }
@@ -119,7 +102,7 @@ class adminwork extends Controller
 
     public function datechnagerept($month, $year)
     {
-        if (Auth::user()) {
+        if (Auth::user()->type == 0 or Auth::user()->type == 2) {
             $nvdata = FeeRequest::where('status', 0)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
             $updata = FeeRequest::where('status', 1)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
             $rjdata = FeeRequest::where('status', 2)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
@@ -144,7 +127,11 @@ class adminwork extends Controller
                 //dd($name->name);
                 $cmd->name = $name->name;
             }
-            return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata', 'month', 'year'));
+            if (Auth::user()->type == 0) {
+                return view('Admin.adminreport', compact('nvdata', 'updata', 'rjdata', 'cmdata', 'month', 'year'));    
+            } else {
+                return view('Librarian.libreport', compact('nvdata', 'updata', 'rjdata', 'cmdata', 'month', 'year'));
+            }
         } else {
             return redirect()->to('/');
         }
@@ -191,10 +178,10 @@ class adminwork extends Controller
         }
     }
 
-    public function addacc(Request $req)
+    public function adduser(Request $req)
     {
         $type = 'Select Role';
-        if (Auth::user()) {
+        if (Auth::user()->type == 0) {
 
             $validatedData = $req->validate([
                 'name' => 'required|max:255',
@@ -219,7 +206,7 @@ class adminwork extends Controller
                 $user->save();
 
                 $data = User::where('type', 1)->get();
-                toast('Accountant Detail Update Successful.', 'success')->width('20em');
+                toast('Authoritie Detail Update Successful.', 'success')->width('20em');
                 return redirect()->to('/add_user');
             } else {
                 
@@ -237,7 +224,7 @@ class adminwork extends Controller
                 }
                 $user->save();
                 $data = User::where('type', 1)->get();
-                toast('Accountant Add Successful.', 'success')->width('20em');
+                toast('Authoritie Add Successful.', 'success')->width('20em');
                 return redirect()->to('/add_user');
             }
 
@@ -246,103 +233,10 @@ class adminwork extends Controller
         }
     }
 
-    public function passorrejectreq(Request $req)
-    {
-        if (Auth::user()) {
-            
-            //dd($req->input());
-            if ($req->input('rejectclick') >= 1) {
-                $validatedData = $req->validate([
-                'reject_reason' => 'required',
-                ]);
-            }
-            $request = FeeRequest::where('enroll', $req->input('reqenroll'))->first();
-            $stud = Student::where('enroll', $req->input('reqenroll'))->first();
-            if ($req->input('reject_reason') == null and $req->input('rejectclick') < 1) {
-                // Cut Pendding Book Amount
-                if ($req->input('pendingbook') != null) {
-                    $books = explode(',', $req->input('pendingbook'));
-                    //dd($books);
-                    foreach ($books as $value) {
-                        $key = explode('-', $value);
-                        if (count($key) >= 2) {
-                            $request->amount = $request->amount - (int)$key[1];
-                        }
-                    }
-                }
-                if ($request->amount < 0) {
-                    //dd($request->amount);
-                    //When Amount after Cut pending book money is less then 0
-                    
-                    $request->reason = "Student Need To Pay Us";
-                    $request->pendingbook = "Request Accepted & Amount Deducted.";
-                    $request->status = 2;
-                    $request->amount = abs($request->amount);
-                    $request->save();
-
-                    $details = [
-                        
-                        'title' => 'Title: Mail From L.J Library fee Refund System',
-                        'body' => 'After Cut your pending book amount from payable amount. it shows you have to pay ' .abs($request->amount). ' INR to L.J So Your Request Is Rejected. Come & Pay This amount First.'
-
-                    ];
-                    \Mail::to($stud->email)->send(new requeststatus($details));
-
-                    Alert::error('Request Rejected', "Student Need To Pay ". abs($request->amount). "INR To Us.");
-                } else {
-                    
-                    $request->reason = "Under Payment";
-                    $request->pendingbook = "Request Accepted & Amount Deducted.";
-                    $request->status = 1;
-                    $request->save();
-
-                    $details = [
-                        'title' => 'Title: Mail From L.J Library fee Refund System',
-                        'body' => 'Your request is Under Payment. Your Amount is '.$request->amount
-                    ];
-                    \Mail::to($stud->email)->send(new requeststatus($details));
-                    
-                    Alert::success('Request', 'Request Goes Into Under Payment.');
-                }
-                return redirect()->to('/admin');
-            } else {
-                if ($req->input('rejectclick') == 1) {
-                    //Reject Request
-        
-                    if ($request->reason != "Student Need To Pay Us") {
-                        $request->reason = $req->input('reject_reason');
-                    } else {
-                        $details = [
-                            'title' => 'Title: Mail From L.J Library fee Refund System',
-                            'body' => 'Your Request Is Rejected. Because of '. $request->reason
-                        ];
-                        \Mail::to($stud->email)->send(new requeststatus($details));
-                    }
-                    $request->status = 2;
-                    $request->save();
-                    Alert::success('Request', 'Request Rejected Success.');
-                } else {
-                    //Set Pending Book Detail Success.
-                    $details = [
-                        'title' => 'Title: Mail From L.J Library fee Refund System',
-                        'body' => 'You have pending books. AS ' .$req->input('reject_reason')
-                    ];
-                    \Mail::to($stud->email)->send(new requeststatus($details));
-                    $request->pendingbook = $req->input('reject_reason');
-                    $request->status = 0;
-                    $request->save();
-                    Alert::success('Pending Book', 'Set Pending Book Detail Success.');
-                }
-                return redirect()->to('/admin');
-            }
-        } else {
-            return redirect()->to('/');
-        }
-    }
 
     public function addstud(Request $req)
     {
-        if (Auth::user()) {
+        if (Auth::user()->type == 0) {
 
             $validatedData = $req->validate([
                 'customFile' => 'required|max:255',
@@ -361,7 +255,7 @@ class adminwork extends Controller
 
     public function addsinglestud(Request $req)
     {
-        if (Auth::user()) {
+        if (Auth::user()->type == 0) {
 
             // dd($req->input());
             $this->validate($req, [
@@ -387,6 +281,22 @@ class adminwork extends Controller
             toast('Students Add Successful.', 'success')->width('20em');
             return back();
         
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+    public function export()
+    {
+        toast('Students Data Downloaded.', 'success')->width('22em');
+        return Excel::download(new StudentExport, 'students.csv');
+    }
+
+    public function viewstuddetail($id)
+    {
+        if (Auth::user()->type == 0) {
+            $user = Student::where('enroll', $id)->first();
+            return view('Admin.viewstuddetail', compact('user'));
         } else {
             return redirect()->to('/');
         }
@@ -433,130 +343,6 @@ class adminwork extends Controller
             return redirect()->to('/');
         }
     }
-
-    public function export()
-    {
-        toast('Students Data Downloaded.', 'success')->width('22em');
-        return Excel::download(new StudentExport, 'students.xlsx');
-    }
-
-    public function cmexport($month, $year)
-    {
-        //dd($year);
-        $cmdata = FeeRequest::where('status', 3)->whereYear('paydate', $year)->whereMonth('paydate', $month)->get();
-        foreach ($cmdata as $cmd) {
-                $name = Student::where('enroll', $cmd->enroll)->select('name')->first();
-                //dd($name->name);
-                $cmd->name = $name->name;
-        }
-        $filename = "completedreq_".$month."_".$year.".csv";
-        //dd($cmdata);
-        $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('Req_id', 'enroll', 'name', 'lfees_no', 'Status', 'completedby', 'paydate', 'tran_id', 'amount'));
-
-        foreach ($cmdata as $row) {
-            if ($row['tran_id'] != null) {
-                fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'],
-                    "Completed", $row['completedby'], $row['paydate'], $row['tran_id'], $row['amount']));
-            } else {
-                fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'], $row['completedby'], $row['paydate'], "NULL", $row['amount']));
-            }
-        }
-
-        fclose($handle);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-        return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
-        
-    }
-
-    public function upexport($month, $year)
-    {
-        //dd($month);
-        $updata = FeeRequest::where('status', 1)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
-        
-        foreach ($updata as $upd) {
-                $name = Student::where('enroll', $upd->enroll)->select('name')->first();
-                //dd($name->name);
-                $upd->name = $name->name;
-        }
-        $filename = "underpaymentreq_".$month."_".$year.".csv";
-        //dd($updata);
-        $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('Req_id', 'enroll', 'name', 'lfees_no', 'Status', 'amount'));
-
-        foreach ($updata as $row) {
-            fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'], "Under Payment", $row['amount']));
-        }
-
-        fclose($handle);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-        //dd($cmdata);
-        return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
-    }
-
-    public function nvexport($month, $year)
-    {
-        //dd($month);
-        $nvdata = FeeRequest::where('status', 0)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
-        
-        foreach ($nvdata as $nvd) {
-                $name = Student::where('enroll', $nvd->enroll)->select('name')->first();
-                //dd($name->name);
-                $nvd->name = $name->name;
-        }
-        $filename = "notvarifiedreq_".$month."_".$year.".csv";
-        //dd($updata);
-        $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('Req_id', 'enroll', 'name', 'lfees_no', 'Status', 'amount'));
-
-        foreach ($nvdata as $row) {
-            fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'], "Not Varified Yet", $row['amount']));
-        }
-
-        fclose($handle);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-        //dd($cmdata);
-        //toast('Students Data Downloaded.', 'success')->width('22em');
-        return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
-    }
-
-    public function rjexport($month, $year)
-    {
-        //dd($month);
-        $rjdata = FeeRequest::where('status', 2)->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
-        
-        foreach ($rjdata as $rjd) {
-                $name = Student::where('enroll', $rjd->enroll)->select('name')->first();
-                //dd($name->name);
-                $rjd->name = $name->name;
-        }
-        $filename = "rejectedreq_".$month."_".$year.".csv";
-        //dd($updata);
-        $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('Req_id', 'enroll', 'name', 'lfees_no', 'Status', 'Reason', 'amount'));
-
-        foreach ($rjdata as $row) {
-            fputcsv($handle, array($row['Req_id'], $row['enroll'], $row['name'], $row['lfees_no'], "Rejeted", $row['reason'], $row['amount']));
-        }
-
-        fclose($handle);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-        //dd($cmdata);
-        return Response::download($filename, $filename, $headers)->deleteFileAfterSend(true);
-    }
-
 
     public function sendotp(Request $req)
     {

@@ -26,7 +26,7 @@
     </div>
     @endif
 
-      <form class="" action="{{url('/addacc')}}" method="post">
+      <form class="" action="{{url('/adduser')}}" method="post">
       @csrf
         <!-- Nested Row within Card Body -->
         <div class="row">

@@ -39,7 +39,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="\admin">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="\librarian">
         <div class="sidebar-brand-icon" style="margin-top: 11px;">
           <h4 style="font-weight: bolder;">LJMCA</h4>
         </div>
@@ -51,7 +51,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/admin')}}">
+        <a class="nav-link" href="{{url('/librarian')}}">
           <i class="fas fa-home"></i>
           <span>Home</span></a>
       </li>
@@ -61,7 +61,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/admin_report')}}">
+        <a class="nav-link" href="{{url('/report')}}">
           <i class="fas fa-search-plus"></i>
           <span>Statistical Data</span></a>
       </li>
@@ -118,6 +118,8 @@
 
     @yield('content')
  
+ </div>
+</div>
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">

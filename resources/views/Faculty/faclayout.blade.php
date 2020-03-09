@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="{{('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css')}}">
   <script src="{{url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js')}}"></script>
   <script src="{{url('//code.jquery.com/jquery-1.11.1.min.js')}}"></script>
+  <script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.js')}}"></script>
 
 <style>
 /* The container */
@@ -110,7 +111,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="\admin">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="\faculty">
         <div class="sidebar-brand-icon" style="margin-top: 11px;">
           <h4 style="font-weight: bolder;">LJMCA</h4>
         </div>
@@ -122,7 +123,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/accountent')}}">
+        <a class="nav-link" href="{{url('/faculty')}}">
           <i class="fas fa-home"></i>
           <span>Home</span></a>
       </li>
@@ -179,7 +180,8 @@
     <!-- End of Topbar -->
 
     @yield('content')
-
+</div>
+</div>
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">

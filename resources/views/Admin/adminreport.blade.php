@@ -144,7 +144,7 @@
         <span class="text">Export</span>
       </a>
       @endif
-              <div class="">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="dtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead style="widows: 100%;">
                     <tr>
@@ -201,7 +201,7 @@
         <span class="text">Export</span>
       </a>
       @endif
-              <div class="">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="cmdtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
                     <tr>
@@ -268,7 +268,7 @@
         <span class="text">Export</span>
       </a>
       @endif
-              <div class="">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="updtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
                     <tr>
@@ -324,7 +324,7 @@
         <span class="text">Export</span>
       </a>
       @endif
-              <div class="">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="rjdtHorizontalVerticalExample" width="100%" cellspacing="0" style="text-align:center;">
                   <thead>
                     <tr>

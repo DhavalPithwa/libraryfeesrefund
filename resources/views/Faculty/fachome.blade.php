@@ -1,6 +1,6 @@
-@extends('Accountent.acclayout')
+@extends('Faculty.faclayout')
 
-@section('title','Accountant - Home')
+@section('title','Faculty - Home')
 
 
 @section('content')
@@ -29,47 +29,46 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="text-align: center;">
                   <thead>
                     <tr>
+                      <th>Request Id</th>
                       <th>Enroll</th>
-                      <th>Name</th>
-                      <th>Library Fee Number</th>
-                      <th>Documents</th>
-                      <th>Amount</th>
-                      <th id="head">Accept</th>
+                      <th>Student Name</th>
+                      <th>Status</th>
+                      <th>View</th>
+                      <th>Accept</th>
+                      <th>Reject</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
+                      <th>Request Id</th>
                       <th>Enroll</th>
-                      <th>Name</th>
-                      <th>Library Fee Number</th>
-                      <th>Documents</th>
-                      <th>Amount</th>
-                      <th id="foot">Accept</th>
+                      <th>Student Name</th>
+                      <th>Status</th>
+                      <th>View</th>
+                      <th>Accept</th>
+                      <th>Reject</th>
                     </tr>
                   </tfoot>
                     @csrf
                   <tbody>
-                    @foreach ($updata as $upd)
+                    @foreach ($data as $ld)
                     <tr>
-                      <td name="requestenroll">{{$upd->enroll}}</td>
-                      <td>{{$upd->name}}</td>
-                      <td>{{$upd->lfees_no}}</td>
-                      @if ($upd->lfees_path == null or $upd->sem6fee_path == null or $upd->passbook_path == null or $upd->cheque_path == null or $upd->gtugrade_path == null)
-                      <td>Documents Missing</td>
-                      @else 
-                      <td>All Documents Submited</td>
-                      @endif
-                      <td>{{$upd->amount}}</td>
-                      <td>
-                        <button class="btn btn-primary btn-user btn-block" name="btnacc"  id="btnacc" onClick="seetrid({{$upd->enroll}});">
-                        Accept
-                        </button>
-                        
-                      </td>
-                    </tr>
+                        <td>{{ ($loop->index+1) }}</td>
+                        <td>{{ $ld->enroll }}</td>
+                        <td>{{ $ld->sname }}</td>
+                        @if($ld->status == 0)
+                          <td>Pending</td>
+                        @elseif($ld->status == 1)
+                          <td>Approved Go For Payment</td>
+                        @elseif($ld->status == 2)
+                          <td>Completed</td>
+                        @endif
+                        <td><a href='{{url("/viewdocfreqdetail/$ld->enroll/$ld->faculty_id")}}'><img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30"></a></td>
+                        <td>Accept</td>
+                        <td>Reject</td>
                     @endforeach
                   </tbody>
                   

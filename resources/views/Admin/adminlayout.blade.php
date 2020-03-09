@@ -81,7 +81,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('/admin_report')}}">
+        <a class="nav-link" href="{{url('/report')}}">
           <i class="fas fa-search-plus"></i>
           <span>Statistical Data</span></a>
       </li>
@@ -138,6 +138,8 @@
 
     @yield('content')
  
+ </div>
+</div>
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">

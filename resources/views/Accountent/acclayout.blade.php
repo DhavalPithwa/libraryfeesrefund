@@ -110,7 +110,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="\admin">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="\accountent">
         <div class="sidebar-brand-icon" style="margin-top: 11px;">
           <h4 style="font-weight: bolder;">LJMCA</h4>
         </div>
@@ -179,7 +179,8 @@
     <!-- End of Topbar -->
 
     @yield('content')
-
+</div>
+</div>
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">

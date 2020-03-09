@@ -1,6 +1,6 @@
-@extends('Admin.adminlayout')
+@extends('Librarian.liblayout')
 
-@section('title','Admin - Report')
+@section('title','Librarian - Report')
 
 
 @section('content')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Student;
 use App\User;
+use App\DocRequest;
 use App\FeeRequest;
 use Hash;
 use Auth;
@@ -169,6 +170,103 @@ class StudentController extends Controller
             Alert::success('Amount Deducted', 'Your Request Accepted Successfully.');
         }
         return redirect()->to('/student');
+    }
+
+    public function docstore(Request $req)
+    {
+        
+        $docreq = new DocRequest;
+        $docreq->enroll = Auth::guard('student')->user()->enroll;
+
+        if ($req->input('type') == 1) {
+
+            $data = DocRequest::where('enroll', Auth::guard('student')->user()->enroll)->where('type', 1)->first();
+            if ($data) {
+                Alert::error('Bonafide Request Rejected', "You Applyed One Request Already");
+                return redirect()->back();
+            } else {
+                $deleted = DocRequest::where('enroll', Auth::guard('student')->user()->enroll)->where('type', 1)->withTrashed()->first();
+                if($deleted) {
+                    $deleted->deleted_at = null;
+                    $deleted->save();
+                    Alert::success('Document Request', "Your Request Send Successfully.");
+                    return redirect()->to('/docrequest');
+                } else {
+                    $docreq->type = 1;    
+                }
+                
+            }
+
+        } else {
+            $type = 'Select Faculty';
+            $this->validate($req, [
+                'pdffile' => 'required|mimes:pdf|max:100',
+                'faculty' =>   'required|not_in:'.$type,
+            ]);
+
+            $faculty = explode('-', $req->input('faculty'));
+            
+            $data = DocRequest::where('enroll', Auth::guard('student')->user()->enroll)->where('faculty_id', $faculty[0])->first();
+
+            if ($data) {
+                Alert::error('LOR Request Rejected', "You Already Send One Request To " . $faculty[1]);
+                return redirect()->back();
+            }
+
+            $deleted = DocRequest::where('enroll', Auth::guard('student')->user()->enroll)->where('faculty_id', $faculty[0])->withTrashed()->first();
+            if($deleted) {
+                $deleted->deleted_at = null;
+                $deleted->save();
+                Alert::success('Document Request', "Your Request Send Successfully.");
+                return redirect()->to('/docrequest');
+            } else {
+                $docreq->type = 1;    
+            }
+
+            $docreq->type = 0;
+            
+            $docreq->faculty_id = $faculty[0];
+
+            $destinationPath = public_path('/pdffiles');
+
+            if ($req->hasFile('pdffile')) {
+                $lorpdf = $req->file('pdffile');
+                $pdfname = Auth::guard('student')->user()->enroll.'_'.$req->input('faculty').'_lor'.'.'.$lorpdf->getClientOriginalExtension();
+                $lorpdf->move($destinationPath, $pdfname);
+                $docreq->lorpdf_path = $pdfname;
+            }
+        }
+
+        $docreq->status = 0;
+        $docreq->save();
+        Alert::success('Document Request', "Your Request Send Successfully.");
+        return redirect()->to('/docrequest');
+    }
+
+    public function exteddocreq($id,$fid)
+    {
+        if (Auth::guard('student')->user()) {
+            $data = DocRequest::where(['enroll'=>$id,'faculty_id'=>$fid])->first();
+            $name = User::where('id',$data->faculty_id)->first();
+            $data->fname = $name->name;
+            $user = Student::where('enroll', $id)->first();
+            return view('Student.viewdocrequest', compact('user', 'data'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+    public function exteddocfreq($id,$fid)
+    {
+        if (Auth::user()->type == 3) {
+            $data = DocRequest::where(['enroll'=>$id,'faculty_id'=>$fid])->first();
+            $name = User::where('id',$data->faculty_id)->first();
+            $data->fname = $name->name;
+            $user = Student::where('enroll', $id)->first();
+            return view('Faculty.viewdocrequest', compact('user', 'data'));
+        } else {
+            return redirect()->to('/');
+        }
     }
 
     /**
