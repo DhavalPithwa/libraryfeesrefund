@@ -107,12 +107,24 @@ Route::get('/viewstuddetail/{id}', 'adminwork@viewstuddetail');
 Route::get('/accountent', function () {
     if (Auth::user()->type == 1) {
         $updata = FeeRequest::where('status', 1)->get();
+        $lordata = DocRequest::where(['status'=>1,'type'=>0])->get();
+        $bfdata = DocRequest::where(['status'=>1,'type'=>1])->get();
         foreach ($updata as $upd) {
             $name = Student::where('enroll', $upd->enroll)->select('name')->first();
-            //dd($name->name);
             $upd->name = $name->name;
         }
-        return view('Accountent.acchomewithdate', compact('updata'));
+        foreach ($lordata as $lord) {
+            $name = Student::where('enroll', $lord->enroll)->select('name')->first();
+            $lord->name = $name->name;
+            $name = User::where('id', $lord->faculty_id)->select('name')->first();
+            $lord->fname = $name->name;
+        }
+        foreach ($bfdata as $bfd) {
+            $name = Student::where('enroll', $bfd->enroll)->select('name')->first();
+            $bfd->name = $name->name;
+        }
+        //dd($bfdata);
+        return view('Accountent.acchomewithdate', compact('updata','lordata','bfdata'));
     } else {
         return redirect()->to('/');
     }
@@ -120,7 +132,7 @@ Route::get('/accountent', function () {
 
 Route::get('/faculty', function () {
     if (Auth::user()->type == 3) {
-        $data = DocRequest::where('faculty_id', Auth::user()->id)->get();
+        $data = DocRequest::where('faculty_id', Auth::user()->id)->where('status',0)->get();
         foreach ($data as $d) {
             $name = Student::where('enroll', $d->enroll)->first();
             $d->sname = $name->name;
@@ -179,6 +191,23 @@ Route::get('/docrequest', function () {
 Route::get('/viewdocreqdetail/{id}/{fid}', 'StudentController@exteddocreq');
 
 Route::get('/viewdocfreqdetail/{id}/{fid}', 'StudentController@exteddocfreq');
+
+Route::get('/docreqstatus/{id}/{fid}/{status}', function ($id,$fid,$status) {
+    if (Auth::user()->type == 3) {
+        $docreq = DocRequest::where(['enroll'=>$id,'faculty_id'=>$fid])->first();
+        $docreq->status = $status;
+        $docreq->save();
+        if ($status == 1) {
+            Alert::success('LOR Request Approved', 'Request Approved Successfilly.');    
+        } else {
+            Alert::success('LOR Request Rejected', 'Request Rejected Successfilly.');
+        }
+        
+        return redirect()->to('/faculty');
+    } else {
+        return redirect()->to('/');
+    }
+});
 
 Route::get('/deletedocdetail/{id}/{fid}', function ($id,$fid) {
     if (Auth::guard('student')->user()) {

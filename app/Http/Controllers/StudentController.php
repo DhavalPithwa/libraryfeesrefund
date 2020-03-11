@@ -194,7 +194,7 @@ class StudentController extends Controller
                 } else {
                     $docreq->type = 1;    
                 }
-                
+                $docreq->status = 1;
             }
 
         } else {
@@ -235,9 +235,10 @@ class StudentController extends Controller
                 $lorpdf->move($destinationPath, $pdfname);
                 $docreq->lorpdf_path = $pdfname;
             }
+
+            $docreq->status = 0;
         }
 
-        $docreq->status = 0;
         $docreq->save();
         Alert::success('Document Request', "Your Request Send Successfully.");
         return redirect()->to('/docrequest');
@@ -250,7 +251,8 @@ class StudentController extends Controller
             $name = User::where('id',$data->faculty_id)->first();
             $data->fname = $name->name;
             $user = Student::where('enroll', $id)->first();
-            return view('Student.viewdocrequest', compact('user', 'data'));
+            $users = User::where('type',3)->get();
+            return view('Student.viewdocrequest', compact('user', 'data','users'));
         } else {
             return redirect()->to('/');
         }

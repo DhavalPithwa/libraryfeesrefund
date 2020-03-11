@@ -51,7 +51,7 @@
                       </div>
                       <div class="form-check-inline" style="font-size:19px;">
                         <label class="text-gray-900 mb-4">
-                          <input type="radio" class="form-check-input" name="optradio" checked style="width: 20px; height: 15px;" onclick="librarian()">Librarian/Accountant
+                          <input type="radio" class="form-check-input" name="optradio" checked style="width: 20px; height: 15px;" onclick="librarian()">Authorities
                         </label>
                       </div>
                     </div>

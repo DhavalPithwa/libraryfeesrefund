@@ -70,7 +70,7 @@
                   <thead style="widows: 100%;">
                     <tr>
                       <th>Request Id</th>
-                      <th>Faculty_Id</th>
+                      <th>Faculty</th>
                       <th>Status</th>
                       <th>Completedby</th>
                       <th>Paydate</th>
@@ -83,7 +83,7 @@
                   <tfoot>
                     <tr>
                       <th>Request Id</th>
-                      <th>Faculty_Id</th>
+                      <th>Faculty</th>
                       <th>Status</th>
                       <th>Completedby</th>
                       <th>Paydate</th>
@@ -100,21 +100,41 @@
                         <td>{{$ld->fname}}</td>
                         @if($ld->status == 0)
                           <td>Pending</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
                         @elseif($ld->status == 1)
                           <td>Approved Go For Payment</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
                         @elseif($ld->status == 2)
+                          <td>Rejected</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                        @elseif($ld->status == 3)
                           <td>Completed</td>
                           <td>{{ $ld->completedby }}</td>
                           <td>{{ $ld->paydate }}</td>
                           <td>{{ $ld->tran_id }}</td>
                           <td>{{ $ld->amount }}</td>
                         @endif
-                        <td>Not Requried</td>
-                        <td>Not Requried</td>
-                        <td>Not Requried</td>
-                        <td>Not Requried</td>
                         <td><a href='{{url("/viewdocreqdetail/$ld->enroll/$ld->faculty_id")}}'><img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30"></a></td>
-                        <td><a onclick="docdelconfirmation(event)" href='{{url("/deletedocdetail/$ld->enroll/$ld->faculty_id")}}'><img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30"></a></td>
+                        @if($ld->status == 1 or $ld->status == 2 or $ld->status == 3)
+                        <td>
+                          <img src="{{url('/images/delete.png')}}" onclick="deletenotallowed(event)" class="img-responsive" width="30" height="30">
+                        </td>
+                        @else
+                        <td>
+                          <a onclick="docdelconfirmation(event)" href='{{url("/deletedocdetail/$ld->enroll/$ld->faculty_id")}}'>
+                            <img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30">
+                          </a>
+                        </td>
+                        @endif
                     @endforeach
                   </tbody>
                 </table>
@@ -152,20 +172,40 @@
                         <td>{{ ($loop->index+1) }}</td>
                         @if($bd->status == 0)
                           <td>Pending</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
                         @elseif($bd->status == 1)
                           <td>Approved Go For Payment</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
                         @elseif($bd->status == 2)
+                          <td>Rejected</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                          <td>Not Requried</td>
+                        @elseif($bd->status == 3)
                           <td>Completed</td>
                           <td>{{ $bd->completedby }}</td>
                           <td>{{ $bd->paydate }}</td>
                           <td>{{ $bd->tran_id }}</td>
                           <td>{{ $bd->amount }}</td>
                         @endif
-                        <td>Not Requried</td>
-                        <td>Not Requried</td>
-                        <td>Not Requried</td>
-                        <td>Not Requried</td>
-                        <td><a onclick="docdelconfirmation(event)" href='{{url("/deletedocdetail/$bd->enroll/0")}}'><img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30"></a></td>
+                        @if($bd->status == 1 or $bd->status == 2 or $bd->status == 3)
+                        <td>
+                          <img src="{{url('/images/delete.png')}}" onclick="deletenotallowed(event)" class="img-responsive" width="30" height="30">
+                        </td>
+                        @else
+                        <td>
+                          <a onclick="docdelconfirmation(event)" href='{{url("/deletedocdetail/$bd->enroll/0")}}'>
+                            <img src="{{url('/images/delete.png')}}" class="img-responsive" width="30" height="30">
+                          </a>
+                        </td>
+                        @endif
                     @endforeach
                   </tbody>
                 </table>
@@ -226,5 +266,14 @@
           }
         });
     }
+
+  function deletenotallowed(ev)
+  {
+    swal({
+      icon: 'error',
+      title: 'Oops...',
+      text: "You Can't Delete This Request Now"
+    })
+  }
 </script>
 @endsection

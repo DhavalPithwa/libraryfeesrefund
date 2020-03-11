@@ -37,7 +37,7 @@
                       <th>Student Name</th>
                       <th>Status</th>
                       <th>View</th>
-                      <th>Accept</th>
+                      <th>Approved</th>
                       <th>Reject</th>
                     </tr>
                   </thead>
@@ -48,7 +48,7 @@
                       <th>Student Name</th>
                       <th>Status</th>
                       <th>View</th>
-                      <th>Accept</th>
+                      <th>Approved</th>
                       <th>Reject</th>
                     </tr>
                   </tfoot>
@@ -67,8 +67,8 @@
                           <td>Completed</td>
                         @endif
                         <td><a href='{{url("/viewdocfreqdetail/$ld->enroll/$ld->faculty_id")}}'><img src="{{url('/images/viewmore.png')}}" class="img-responsive" width="30" height="30"></a></td>
-                        <td>Accept</td>
-                        <td>Reject</td>
+                        <td><a href='{{url("/docreqstatus/$ld->enroll/$ld->faculty_id/1")}}'><img src="{{url('/images/docapproved.svg')}}" class="img-responsive" width="30" height="30"></a></td>
+                        <td><a href='{{url("/docreqstatus/$ld->enroll/$ld->faculty_id/3")}}'><img src="{{url('/images/docreject.svg')}}" class="img-responsive" width="30" height="30"></a></td>
                     @endforeach
                   </tbody>
                   

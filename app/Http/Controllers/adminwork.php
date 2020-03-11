@@ -31,28 +31,22 @@ class adminwork extends Controller
             $updata = FeeRequest::where('status', 1)->get();
             $rjdata = FeeRequest::where('status', 2)->get();
             $cmdata = FeeRequest::where('status', 3)->get();
-            // $user = Auth::user();
             foreach ($nvdata as $d) {
                 $name = Student::where('enroll', $d->enroll)->select('name')->first();
-                //dd($name->name);
                 $d->name = $name->name;
             }
             foreach ($updata as $upd) {
                 $name = Student::where('enroll', $upd->enroll)->select('name')->first();
-                //dd($name->name);
                 $upd->name = $name->name;
             }
             foreach ($rjdata as $rjd) {
                 $name = Student::where('enroll', $rjd->enroll)->select('name')->first();
-                //dd($name->name);
                 $rjd->name = $name->name;
             }
             foreach ($cmdata as $cmd) {
                 $name = Student::where('enroll', $cmd->enroll)->select('name')->first();
-                //dd($name->name);
                 $cmd->name = $name->name;
             }
-            //dd($data);
             return view('Admin.adminhome', compact('nvdata', 'cmdata', 'updata', 'rjdata'));
         } else {
             return redirect()->to('/');

@@ -24,8 +24,18 @@
        <!-- Table Start -->
 <form action="{{url('/acceptreq')}}" method="post" id="form">
        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Under Payment Requests</h6>
+            <div class="card-header">
+              <ul class="nav nav-pills">
+                <li class="nav-item">
+                  <h4 class="font-weight-bold text-primary" onclick="lor()" style="cursor: pointer; text-decoration: underline;" id="lorh4">Library Fee Refund Requests</h4>
+                </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <li class="nav-item">
+                  <h4 class="font-weight-bold text-primary" onclick="lor()" style="cursor: pointer; text-decoration: underline;" id="lorh4">LOR Requests</h4>
+                </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <li class="nav-item">
+                  <h4 class="font-weight-bold text-primary" onclick="bone()" style="cursor: pointer;" id="bonh4">Bonafide Requests</h4>
+                </li>
+              </ul>
             </div>
             <div class="card-body">
               <div class="table-responsive">

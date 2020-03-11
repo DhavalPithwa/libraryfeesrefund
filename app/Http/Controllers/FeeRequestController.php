@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Student;
 use App\FeeRequest;
+use App\DocRequest;
 use Hash;
 use Auth;
 use Excel;
@@ -100,28 +101,77 @@ class FeeRequestController extends Controller
                 'date' => 'required',
             ]);
         $date = date("Y-m-d", strtotime($request->input('date')));
-        //dd($date);
+        
         $user = Auth::user();
         $name = $user->id."-".$user->name;
-        $tidcount = 0;
-        //dd($name);
-        foreach ($request->input('check') as $data) {
-            $req = FeeRequest::where('enroll', $data)->first();
-            $stud = Student::where('enroll', $data)->first();
-            $req->status = 3;
-            $req->completedby = $name;
-            $req->tran_id = $request->input($data);
-            $req->reason = "Completed";
-            $req->paydate = $date;
-            $req->save();
-            $tidcount = $tidcount + 1;
-            $details = [
-                'title' => 'Title: Mail From L.J Library fee Refund System',
-                'body' => 'Your request is completed. Your Amount is '.$req->amount
-            ];
-            \Mail::to($stud->email)->send(new requeststatus($details));
+        //$tidcount = 0;
+        
+        if ($request->has('lfr-check')) {
+
+            foreach ($request->input('lfr-check') as $data) {
+                $req = FeeRequest::where('enroll', $data)->first();
+                $stud = Student::where('enroll', $data)->first();
+                $req->status = 3;
+                $req->completedby = $name;
+                $req->tran_id = $request->input('lfr-'.$data);
+                $req->reason = "Completed";
+                $req->paydate = $date;
+                $req->save();
+                //$tidcount = $tidcount + 1;
+                $details = [
+                    'title' => 'Title: Mail From L.J Library fee Refund System',
+                    'body' => 'Your request is completed. Your Amount is '.$req->amount
+                ];
+                \Mail::to($stud->email)->send(new requeststatus($details));
+            }
+
         }
-        Alert::success('Accept Request', 'Request Accept & Transaction Id Saved..');
+        
+        if ($request->has('lor-check')) {
+            
+            foreach ($request->input('lor-check') as $data) {
+                $data = explode('-', $data);
+                
+                $req = DocRequest::where(['enroll'=>$data[0],'faculty_id'=>$data[1]])->first();
+                $stud = Student::where('enroll', $data[0])->first();
+                $req->status = 3;
+                $req->completedby = $name;
+                $req->tran_id = $request->input('lor-'.$data[0]);
+                $req->paydate = $date;
+                $req->amount = $request->input('loramt-'.$data[0]);
+                $req->save();
+                //$tidcount = $tidcount + 1;
+                $details = [
+                    'title' => 'Title: Mail From L.J Library fee Refund System',
+                    'body' => 'Your request for LOR is completed.'
+                ];
+                \Mail::to($stud->email)->send(new requeststatus($details));
+            }
+                
+        }
+        
+        if ($request->has('bof-check')) {
+
+            foreach ($request->input('bof-check') as $data) {
+                $req = DocRequest::where(['enroll'=>$data,'type'=>1])->first();
+                $stud = Student::where('enroll', $data)->first();
+                $req->status = 3;
+                $req->completedby = $name;
+                $req->tran_id = $request->input('bof-'.$data);
+                $req->paydate = $date;
+                $req->amount = $request->input('bofamt-'.$data);
+                $req->save();
+                //$tidcount = $tidcount + 1;
+                $details = [
+                    'title' => 'Title: Mail From L.J Library fee Refund System',
+                    'body' => 'Your request for bonafide certificate is completed.'
+                ];
+                \Mail::to($stud->email)->send(new requeststatus($details));
+            }
+
+        }
+        
+        Alert::success('Requests Completed', 'Request Completed & Transaction Id Saved..');
         return redirect()->to('/accountent');
     }
 
