@@ -11,6 +11,7 @@ use Auth;
 use Excel;
 use Route;
 use Validator;
+use PDF;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Exports\StudentExport;
@@ -38,6 +39,13 @@ class StudentController extends Controller
     {
         //
     }
+
+    public function export_pdf()
+      {
+        
+        
+      }
+
 
     /**
      * Store a newly created resource in storage.
@@ -192,7 +200,25 @@ class StudentController extends Controller
                     Alert::success('Document Request', "Your Request Send Successfully.");
                     return redirect()->to('/docrequest');
                 } else {
-                    $docreq->type = 1;    
+                    $docreq->type = 1; 
+                    $data = Auth::guard('student')->user();
+                    $year = $data->enroll;
+                    $start = '20'.substr($year,0,2);
+                    if(substr($year,7,1) == 9){
+                        if(substr($year,5,1) == 0){
+                            $end = $start + 3;
+                        } else {
+                            $end = $start + 2;
+                        }
+                    } else {
+                        $end = $start + 5;
+                    }
+                    $year = $start.'-'.substr($end,2,2);
+                    $data->years = $year;
+                    $pdf = PDF::loadView('Student.bonefiedcertifictetemplate', $data);
+                    $pdfname = $data->enroll.'_bonafied.pdf';
+                    $pdf->save(public_path('/pdffiles/'.$pdfname)); 
+                    $docreq->bonafiepdf_path = $pdfname; 
                 }
                 $docreq->status = 1;
             }
@@ -391,10 +417,9 @@ class StudentController extends Controller
 
     public function updatestud(Request $request)
     {
-        //dd($req->input());
+        //dd($request->input());
         $this->validate($request, [
 
-            'enroll' => 'required|numeric',
             'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required|numeric|digits:10',

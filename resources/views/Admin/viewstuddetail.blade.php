@@ -29,7 +29,8 @@
               <div class="form-row" style="padding: 10px;">
                 <div class="col">
                     <h3 class="h3 mb-0 text-gray-800"><b>Enrollment</b></h3><br>
-                    <input type="text" class="form-control" style="width: 300px;margin-top: -6px; " name="enroll" value="{{$user->enroll}}">
+                    <input type="hidden" name="enroll" value="{{$user->enroll}}">
+                    <input type="text" class="form-control" style="width: 300px;margin-top: -6px; " name="enroll" value="{{$user->enroll}}" disabled="">
                     <hr>
                 </div>
                 <div class="col">

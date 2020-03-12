@@ -111,7 +111,6 @@
                       <th>Enrollment</th>
                       <th>Name</th>
                       <th>Faculty</th>
-                      <th>Status</th>
                       <th>Transaction Id</th>
                       <th>Amount</th>
                       <th>Select</th>
@@ -122,7 +121,6 @@
                       <th>Request Id</th>
                       <th>Enrollment</th>
                       <th>Faculty</th>
-                      <th>Status</th>
                       <th>Transaction Id</th>
                       <th>Amount</th>
                       <th>Select</th>
@@ -135,15 +133,6 @@
                         <td>{{ $ld->enroll }}</td>
                         <td>{{ $ld->name }}</td>
                         <td>{{$ld->fname}}</td>
-                        @if($ld->status == 0)
-                          <td>Pending</td>
-                        @elseif($ld->status == 1)
-                          <td>Approved Go For Payment</td>
-                        @elseif($ld->status == 3)
-                          <td>Rejected</td>
-                        @elseif($ld->status == 2)
-                          <td>Completed</td>
-                        @endif
                         <td>
                           <input type="text" class="form-control" name="lor-{{$ld->enroll}}" id="tid" placeholder="  Enter Transaction Id For {{$ld->name}}">
                         </td>
@@ -170,7 +159,7 @@
                       <th>Request Id</th>
                       <th>Enrollment</th>
                       <th>Name</th>
-                      <th>Status</th>
+                      <th>BonafiedFile</th>
                       <th>Transaction Id</th>
                       <th>Amount</th>
                       <th>Select</th>
@@ -180,7 +169,7 @@
                     <tr>
                       <th>Request Id</th>
                       <th>Enrollment</th>
-                      <th>Status</th>
+                      <th>BonafiedFile</th>
                       <th>Transaction Id</th>
                       <th>Amount</th>
                       <th>Select</th>
@@ -192,15 +181,9 @@
                         <td>{{ ($loop->index+1) }}</td>
                         <td>{{ $bd->enroll }}</td>
                         <td>{{ $bd->name }}</td>
-                        @if($bd->status == 0)
-                          <td>Pending</td>
-                        @elseif($bd->status == 1)
-                          <td>Approved Go For Payment</td>
-                        @elseif($bd->status == 3)
-                          <td>Rejected</td>
-                        @elseif($bd->status == 2)
-                          <td>Completed</td>
-                        @endif
+                        <td>
+                          <a style="color: gray;" href="{{url('/pdffiles/'.$bd->bonafiepdf_path)}}">{{ $bd->bonafiepdf_path }}</a>
+                        </td>
                         <td>
                           <input type="text" class="form-control" name="bof-{{$bd->enroll}}" id="tid" placeholder="Enter Transaction Id For {{$bd->name}}">
                         </td>

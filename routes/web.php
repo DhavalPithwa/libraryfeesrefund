@@ -15,6 +15,8 @@ use App\DocRequest;
 |
 */
 
+Route::get('/pdf','StudentController@export_pdf');
+
 Route::get('/', function () {
     return view('login');
 });

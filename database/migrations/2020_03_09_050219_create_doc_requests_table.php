@@ -20,6 +20,7 @@ class CreateDocRequestsTable extends Migration
             $table->bigInteger('faculty_id')->nullable()->unsigned();
             $table->foreign('faculty_id')->references('id')->on('users');
             $table->string('lorpdf_path')->nullable();
+            $table->string('bonafiepdf_path')->nullable();
             $table->integer('status');
             $table->integer('type');
             $table->string('completedby')->nullable();
