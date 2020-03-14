@@ -31,13 +31,13 @@
             <div class="card-header py-3">
               <ul class="nav nav-pills">
                 <li class="nav-item">
-                  <h4 class="font-weight-bold text-primary" onclick="lfr()" style="cursor: pointer; text-decoration: underline;" id="lfrh4">Library Fee Refund Requests</h4>
+                  <h4 class="font-weight-bold text-primary" onclick="lfr()" style="cursor: pointer; text-decoration: underline;" id="lfrh4">Library Fee Refund Requests({{ count($updata) }})</h4>
                 </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <li class="nav-item">
-                  <h4 class="font-weight-bold text-primary" onclick="lor()" style="cursor: pointer;" id="lorh4">LOR Requests</h4>
+                  <h4 class="font-weight-bold text-primary" onclick="lor()" style="cursor: pointer;" id="lorh4">LOR Requests({{ count($lordata) }})</h4>
                 </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <li class="nav-item">
-                  <h4 class="font-weight-bold text-primary" onclick="bone()" style="cursor: pointer;" id="bonh4">Bonafide Requests</h4>
+                  <h4 class="font-weight-bold text-primary" onclick="bone()" style="cursor: pointer;" id="bonh4">Bonafide Requests({{ count($bfdata) }})</h4>
                 </li>
               </ul>
             </div>

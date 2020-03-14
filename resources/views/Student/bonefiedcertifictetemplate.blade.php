@@ -34,7 +34,12 @@
 					<b>{{$semester}}rd</b>
 				@else
 					<b>{{$semester}}th</b>
-				@endif Semester in the <b>{{$course}},{{ $years }}</b>.	 
+				@endif Semester in the 
+				@if($course == "IMCA")
+					<b>Integrated-MCA</b>
+				@else
+				<b>{{$course}}</b>
+				@endif<b>,{{ $years }}</b>.	 
 			</p>
 		</div>
 		<div>

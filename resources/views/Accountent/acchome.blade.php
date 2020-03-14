@@ -27,7 +27,7 @@
             <div class="card-header">
               <ul class="nav nav-pills">
                 <li class="nav-item">
-                  <h4 class="font-weight-bold text-primary" onclick="lor()" style="cursor: pointer; text-decoration: underline;" id="lorh4">Library Fee Refund Requests</h4>
+                  <h4 class="font-weight-bold text-primary" onclick="lor()" style="cursor: pointer; text-decoration: underline;" id="lorh4">Library Fee Refund Requests </h4>
                 </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <li class="nav-item">
                   <h4 class="font-weight-bold text-primary" onclick="lor()" style="cursor: pointer; text-decoration: underline;" id="lorh4">LOR Requests</h4>
